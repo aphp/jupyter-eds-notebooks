@@ -1,0 +1,12 @@
+default_channels:
+  - conda-forge
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+envs_dirs:
+  - /home/jovyan/envs
+pkgs_dirs:
+  - /home/jovyan/envs/pkg
+channels:
+  - defaults
+repodata_use_zst: true
+show_anaconda_channel_warnings: false

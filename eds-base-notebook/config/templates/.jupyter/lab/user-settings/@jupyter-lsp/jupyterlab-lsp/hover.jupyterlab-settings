@@ -1,0 +1,8 @@
+{
+    "autoActivate": false,
+    "delay": 300,
+    "modifierKey": "Control",
+    "throttlerDelay": 50,
+    "cacheSize": 25,
+    "disable": false
+}

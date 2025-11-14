@@ -1,0 +1,15 @@
+opam-version: "2.0"
+name: "default"
+authors: "APHP - EDS"
+maintainer: "APHP - EDS"
+homepage: "https://gitlab.eds.aphp.fr/ID/pfm/infrastructure/metier/jupyter/base-eds-notebook"
+bug-reports: "https://gitlab.eds.aphp.fr/ID/pfm/infrastructure/metier/jupyter/base-eds-notebook"
+synopsis: "Base OPAM packages for the OCAML Jupyter Kernel"
+description: "Base OPAM packages for the OCAML Jupyter Kernel"
+depends: [
+  "ocaml" {< "5.0.0"} #Pining down to OCAML 4 because OCAML 5 is not supported yet -> https://github.com/akabe/ocaml-jupyter/issues/202
+  "base"
+  "base-bytes"
+  "jupyter" {>= "2.8.3"} #Forcing latest jupyter kernel version to let OPAM handle the dependency tree as the Kernel has last been updated in 2023.
+  "astring"
+]

@@ -1,0 +1,15 @@
+[username]
+show_always = true
+
+[hostname]
+ssh_only = false
+style = 'bold #62c1c0'
+
+[container]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[conda]
+ignore_base = false

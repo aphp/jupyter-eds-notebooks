@@ -1,0 +1,32 @@
+dependencies:
+  ## Enhanced prompt
+  - starship
+
+  ## Base Dependencies
+  - ipywidgets
+
+  ## Rclone for browsing s3 buckets
+  - rclone
+
+  ## Extensions
+  # Voilà
+  - voila
+
+  # Jupyter Resource Usage
+  - jupyter-resource-usage
+
+  # JupyterLab Git
+  - jupyterlab-git
+  
+  # JupyterLab Collaboration
+  - jupyter-collaboration
+
+  # Jupyter LSP
+  - jupyter-lsp
+  - jupyterlab-lsp
+  - jupyter-lsp-python
+  - jedi-language-server
+  - nodejs
+
+  # Jupyter Server Proxy
+  - jupyter-server-proxy
