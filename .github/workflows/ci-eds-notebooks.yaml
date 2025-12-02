@@ -1,5 +1,5 @@
 name: "ci-eds-notebooks"
-run-name: EDS Notebooks CI triggered by @${{ github.actor }}
+run-name: "EDS Notebooks CI triggered by @${{ github.actor }}"
 
 on:
   schedule:
