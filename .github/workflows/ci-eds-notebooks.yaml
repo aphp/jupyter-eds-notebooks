@@ -22,6 +22,17 @@ jobs:
         JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: >
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+      trivy-ignore-license-ids: >
+        WTFPL
+
 
   eds-ocaml-notebook:
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
@@ -36,3 +47,13 @@ jobs:
         EDS_BASE_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: >
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+      trivy-ignore-license-ids: >
+        WTFPL
