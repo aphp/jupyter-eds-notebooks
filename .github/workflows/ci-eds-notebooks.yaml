@@ -12,7 +12,7 @@ on:
 
 jobs:
   eds-base-notebook:
-    uses: aphp/ci-workflows/.github/workflows/container-ci.yml@dev
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
       ignore_hadolint_rules: "DL3008,DL3016,DL3006"
