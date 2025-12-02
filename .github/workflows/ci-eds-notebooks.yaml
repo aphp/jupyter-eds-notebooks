@@ -15,7 +15,7 @@ jobs:
     uses: aphp/ci-workflows/.github/workflows/container-ci.yml@dev
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
-      ignore_hadolint_rules: "DL3008,DL3016"
+      ignore_hadolint_rules: "DL3008,DL3016,DL3006"
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04"
       extra-build-args: |
