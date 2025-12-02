@@ -1,4 +1,4 @@
-name: ci-eds-notebooks
+name: "ci-eds-notebooks"
 run-name: EDS Notebooks CI triggered by @${{ github.actor }}
 
 on:
