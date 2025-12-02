@@ -26,7 +26,7 @@ jobs:
   eds-ocaml-notebook:
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
     needs: "eds-base-notebook"
-    if: ${{ needs.eds-base-notebook.result == "success" }}
+    if: ${{ needs.eds-base-notebook.result == 'success' }}
     with:
       dockerfile-path: "eds-ocaml-notebook/Dockerfile"
       ignore_hadolint_rules: "DL3008,DL3016"
