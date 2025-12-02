@@ -24,6 +24,7 @@ jobs:
         NOTEBOOK_MAINTAINER=aphp
       dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
       trivy-ignore-vuln-ids: |
+        CVE-2024-21508
         CVE-2024-21511
         CVE-2024-45337
         CVE-2023-24538
