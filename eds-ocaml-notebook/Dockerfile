@@ -1,4 +1,4 @@
-ARG EDS_BASE_NOTEBOOK_IMAGE
+ARG EDS_BASE_NOTEBOOK_IMAGE="ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04"
 
 # Latest image (depending on the environment) from I&D Harbor public repository.
 FROM ${EDS_BASE_NOTEBOOK_IMAGE}
@@ -12,11 +12,11 @@ ARG NOTEBOOK_IMAGE
 ARG NOTEBOOK_MAINTAINER
 
 # Defining labels
-LABEL MAINTAINER="I&D/SAT/AAM"
-LABEL GIT_PROJECT=${GIT_PROJECT}
-LABEL GIT_BRANCH=${GIT_BRANCH}
-LABEL GIT_COMMIT_AUTHOR=${GIT_COMMIT_AUTHOR}
-LABEL GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
+LABEL maintainer="I&D/SAT/AAM"
+LABEL git-project=${GIT_PROJECT}
+LABEL git-branch=${GIT_BRANCH}
+LABEL git-commit-author=${GIT_COMMIT_AUTHOR}
+LABEL git-commit-sha=${GIT_COMMIT_SHA}
 
 ENV DEFAULT_SWITCH_DIR="/opt/opam/switches/default"
 ENV KERNEL_DIR="/opt/conda/share/jupyter/kernels/ocaml-jupyter-default"
@@ -34,8 +34,8 @@ ENV NOTEBOOK_GIT_BRANCH=${GIT_BRANCH}
 ENV NOTEBOOK_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
 
 # Installing OPAM + OCAML requirements
-RUN apt update --yes && \
-    apt install --yes --no-install-recommends \
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
         make \
         gcc \
         opam \
@@ -45,12 +45,12 @@ RUN apt update --yes && \
         libgmp-dev \
         libzmq5-dev \
         rsync && \
-    apt clean && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Creating the base ocaml switch and kernel dirs, and setting suitable ownership
-RUN mkdir -p ${DEFAULT_SWITCH_DIR} && \
-    chown -Rv ${NB_USER}:${NB_GROUP} ${DEFAULT_SWITCH_DIR}
+RUN mkdir -p "${DEFAULT_SWITCH_DIR}" && \
+    chown -Rv "${NB_USER}:${NB_GROUP}" "${DEFAULT_SWITCH_DIR}"
 
 
 # Switching to NB_USER for local tools/libs installation
@@ -64,8 +64,8 @@ RUN  opam init --yes \
         --bare \
         --auto-setup \
         --shell bash && \
-    opam switch create --empty ${DEFAULT_SWITCH_DIR} && \
-    eval $(opam env --switch=/opt/opam/switches/default --set-switch) && \
+    opam switch create --empty "${DEFAULT_SWITCH_DIR}" && \
+    eval "$(opam env --switch=/opt/opam/switches/default --set-switch)" && \
     opam update \
         --all \
         --repositories \
@@ -76,17 +76,17 @@ RUN  opam init --yes \
         --yes
 
 # Generating the Jupyter Kernel genspec file that will be used by Jupyter to install the OCAML Kernel
-RUN eval $(opam env --switch=/opt/opam/switches/default --set-switch) && \
+RUN eval "$(opam env --switch=/opt/opam/switches/default --set-switch)" && \
     opam exec -- ocaml-jupyter-opam-genspec && \
-    grep topfind /home/${NB_USER}/.ocamlinit || echo '#use "topfind";;' >> /home/${NB_USER}/.ocamlinit && \
-    grep Topfind.log /home/${NB_USER}/.ocamlinit || echo 'Topfind.log:=ignore;;' >> /home/${NB_USER}/.ocamlinit
+    grep topfind "/home/${NB_USER}/.ocamlinit" || echo '#use "topfind";;' >> "/home/${NB_USER}/.ocamlinit" && \
+    grep Topfind.log "/home/${NB_USER}/.ocamlinit" || echo 'Topfind.log:=ignore;;' >> "/home/${NB_USER}/.ocamlinit"
 
 
 #Switching back to root to install OPAM Kernel system-wide
 USER root 
 
 # Installing the OCAML Kernel from the genspec file generated earlier
-RUN eval $(opam env --switch=/opt/opam/switches/default --set-switch) && \
+RUN eval "$(opam env --switch=/opt/opam/switches/default --set-switch)" && \
     jupyter kernelspec install \
         --sys-prefix \
         --name "ocaml-jupyter-default" \

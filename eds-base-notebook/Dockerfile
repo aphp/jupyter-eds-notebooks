@@ -1,5 +1,5 @@
 # Defining global build argument
-ARG JUPYTER_BASE_NOTEBOOK_IMAGE
+ARG JUPYTER_BASE_NOTEBOOK_IMAGE="quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
 
 # Latest image (depending on the environment) from Jupyter Quay.io repository
 FROM ${JUPYTER_BASE_NOTEBOOK_IMAGE}
@@ -13,11 +13,11 @@ ARG NOTEBOOK_IMAGE
 ARG NOTEBOOK_MAINTAINER
 
 # Defining labels
-LABEL MAINTAINER="I&D/SAT/AAM"
-LABEL GIT_PROJECT=${GIT_PROJECT}
-LABEL GIT_BRANCH=${GIT_BRANCH}
-LABEL GIT_COMMIT_AUTHOR=${GIT_COMMIT_AUTHOR}
-LABEL GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
+LABEL maintainer="I&D/SAT/AAM"
+LABEL git-project=${GIT_PROJECT}
+LABEL git-branch=${GIT_BRANCH}
+LABEL git-commit-author=${GIT_COMMIT_AUTHOR}
+LABEL git-commit-sha=${GIT_COMMIT_SHA}
 
 # Fix: https://github.com/hadolint/hadolint/wiki/DL4006
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
@@ -34,9 +34,9 @@ ENV NOTEBOOK_GIT_BRANCH=${GIT_BRANCH}
 ENV NOTEBOOK_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
 
 # Installing extra requirements
-RUN apt update --yes && \
-    apt upgrade --yes && \
-    apt install --yes --no-install-recommends \
+RUN apt-get update --yes && \
+    apt-get upgrade --yes && \
+    apt-get install --yes --no-install-recommends \
         bash-completion \
         fonts-firacode \
         openssh-client \
@@ -51,7 +51,7 @@ RUN apt update --yes && \
         vim \
         curl \
         tree &&\
-    apt clean && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Installing language-servers Lab extensions as global packages, fto prevent the node_module folder from being erased at runtime
@@ -103,8 +103,8 @@ USER root
 
 # Setting permissions and freezing base env
 RUN fix-permissions "/home/${NB_USER}" && \
-    chown -R root:root ${CONDA_DIR} && \
-    chmod -R 755 ${CONDA_DIR}
+    chown -R root:root "${CONDA_DIR}" && \
+    chmod -R 755 "${CONDA_DIR}"
 
 
 # Switching to NB_USER that will be the runtime notebook user  
