@@ -1,0 +1,58 @@
+name: ci-eds-notebooks
+run-name: EDS Notebooks CI triggered by @${{ github.actor }}
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  push:
+    branches:
+      - "dev"
+    tags:
+      - "v*.*.*"
+
+jobs:
+  eds-base-notebook:
+    uses: aphp/ci-workflows/.github/workflows/container-ci.yml@dev
+    with:
+      dockerfile-path: "eds-base-notebook/Dockerfile"
+      image-name: "ghcr.io/aphp/base-eds-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04"
+      extra-build-args: |
+        "[
+          {
+            'name':'JUPYTER_BASE_NOTEBOOK_IMAGE',
+            'value':'quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04'
+          },
+          {
+            'name':'NOTEBOOK_IMAGE',
+            'value':'EDS-BASE-NOTEBOOK'
+          },
+          {
+            'name':'NOTEBOOK_MAINTAINER',
+            'value':'aphp'
+          },
+        ]"
+
+  eds-ocaml-notebook:
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    needs: "eds-base-notebook"
+    if: ${{ needs.eds-base-notebook.result == 'success' }}
+    with:
+      dockerfile-path: "eds-ocaml-notebook/Dockerfile"
+      image-name: "ghcr.io/aphp/base-ocaml-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04"
+      extra-build-args: |
+        "[
+          {
+            'name':'EDS_BASE_NOTEBOOK_IMAGE',
+            'value':'ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04'
+          },
+          {
+            'name':'NOTEBOOK_IMAGE',
+            'value':'EDS-BASE-NOTEBOOK'
+          },
+          {
+            'name':'NOTEBOOK_MAINTAINER',
+            'value':'aphp'
+          },
+        ]"
