@@ -128,7 +128,8 @@ eval "$(conda shell.bash hook)"
 eval "$(mamba shell hook -s bash)"
 
 # Initializing opam switch if present (specific to OCAML envs)
-if [[ $(which opam) ]]; then 
+if [[ $(which opam) ]]; then
+    eval "$(opam env --switch=/opt/opam/switches/default --set-switch)"
     eval "$(opam env --switch=/opt/opam/switches/default --set-switch)"
 fi
 
