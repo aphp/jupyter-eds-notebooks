@@ -1,3 +1,5 @@
+[![ci-eds-notebooks](https://github.com/aphp/jupyter-eds-notebooks/actions/workflows/ci-eds-notebooks.yaml/badge.svg)](https://github.com/aphp/jupyter-eds-notebooks/actions/workflows/ci-eds-notebooks.yaml)
+
 # jupyter-eds-notebooks
 
 `jupyter-eds-notebooks` is a collection of Docker images extending the official Jupyter Docker Stacks, tailored for health and clinical research. It provides opinionated Jupyter environments for data science and experimentation on EDS-like (health data warehouse) infrastructures.

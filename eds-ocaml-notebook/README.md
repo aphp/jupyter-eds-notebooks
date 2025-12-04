@@ -1,7 +1,5 @@
 # Base OCaml EDS Notebook
 
-[![ci-eds-notebooks](https://github.com/aphp/jupyter-eds-notebooks/actions/workflows/ci-eds-notebooks.yaml/badge.svg)](https://github.com/aphp/jupyter-eds-notebooks/actions/workflows/ci-eds-notebooks.yaml)
-
 ## Introduction
 
 ### Description
