@@ -1,39 +1,42 @@
-# Base EDS Notebook
+# Base OCaml EDS Notebook
+
+[![ci-eds-notebooks](https://github.com/aphp/jupyter-eds-notebooks/actions/workflows/ci-eds-notebooks.yaml/badge.svg)](https://github.com/aphp/jupyter-eds-notebooks/actions/workflows/ci-eds-notebooks.yaml)
 
 ## Introduction
 
 ### Description
 
-Extension de l'image JupyterLab [base-notebook](https://github.com/jupyter/docker-stacks/tree/main/images/base-notebook) fournissant un environnement de travail basique.
+Extension of the JupyterLab [`base-notebook`](https://github.com/jupyter/docker-stacks/tree/main/images/base-notebook) image providing a minimal working environment, enriched with the tooling required for OCaml workflows.
 
-### Fonctionnement
+### How it works
 
-L'image se base sur l'image `base-notebook` officielle, et l'étends de la même manière que les autres images officielles plus avancées, afin de conserver une compatibilité importante avec les distributions de JupyterLab.
+This image is built on top of the official `base-notebook` image, and extends it in the same spirit as the other official Jupyter Docker Stacks images, in order to stay highly compatible with standard JupyterLab distributions.
 
-Cette image est basée sur l'OS `Ubuntu 24.04` en architecture `x86_64`.
+The image is based on the `Ubuntu 24.04` operating system, targeting the `x86_64` architecture.
 
-Les librairies à ajouter sont configurables dans un fichier copié au moment du build, et l'environnement par défaut est ensuite gelé pour éviter toute dégradation involontaire par les utilisateurs. 
+Additional libraries to be installed are configured in a file that is copied at build time. The resulting default environment is then **frozen** so that users cannot accidentally break it.
 
-À cet effet, les mesures suivantes ont été appliquées : 
+To achieve this, the following measures are applied:
 
-- Les droits du dossier contenant l'environnement `conda` par défaut (`base`) ont été placés en `read-only`
-- La variable d'environnement `PYTHONNOUSERSITE` a été placée à `1` afin d'interdire l'utilisation du repository Python `user local`, situé dans `/home/jovyan/.local`, ce qui permettrait de contourner la restriction placée sur l'environnement `conda` par défaut.
+- File permissions on the default `conda` environment directory (`base`) are set to **read‑only**.
+- The environment variable `PYTHONNOUSERSITE` is set to `1` to prevent the use of the user‑local Python repository in `/home/jovyan/.local`, which would otherwise allow users to bypass the read‑only restriction on the default `conda` environment.
 
-## Exploitation
+## Usage
 
 ### Configuration
 
-Le dossier `config` contient deux fichiers :
+The `config` directory contains two files:
 
-- `.condarc`, contenant la configuration par défaut de la distribution `conda` déployée dans l'image
-- `conda-base-env-update.yaml`, qui contient les librairies installées dans l'environnement `conda` par défaut au runtime
+- `.condarc`: the default configuration for the `conda` distribution shipped in the image.
+- `conda-base-env-update.yaml`: the list of libraries to be installed into the default `conda` environment at build/runtime.
 
-#### Modifier la configuration de conda
+#### Changing the conda configuration
 
-Modifier le fichier `config/.condarc` en suivant [la documentation officielle de conda](https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html), puis rebuilder l'image.
+Edit `config/.condarc` according to the [official conda configuration documentation](https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html), then rebuild the image.
 
-#### Ajouter ou retirer une librairie dans l'environnement conda par défaut
+#### Adding or removing libraries in the default conda environment
 
-Il suffit de manipuler le fichier `config/conda-base-env-update.yaml` pour [y ajouter ou retirer les librairies désirées](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-file-manually), puis de rebuilder l'image.
+Edit `config/conda-base-env-update.yaml` to [add or remove the desired packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-file-manually), then rebuild the image.
 
-**Important** : Ne pas ajouter au fichier yaml `config/conda-base-env-update.yaml` les clés `name`, `channel`, ou tout autre clés à la racine de la structure ; cela aurait pour effet de créer un nouvel environnement `conda`, plutôt que d'enrichir l'existant contenant tout ce dont JupyterLab à besoin, ce qui rendrait l'image non-fonctionnelle.
+**Important:**  
+Do **not** add top‑level keys such as `name`, `channels`, or any other root‑level keys to `config/conda-base-env-update.yaml`. Doing so would create a **new** `conda` environment instead of enriching the existing default one that already contains all dependencies required by JupyterLab. This would make the image non‑functional.
