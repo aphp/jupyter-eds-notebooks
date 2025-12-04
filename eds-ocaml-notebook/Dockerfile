@@ -1,6 +1,5 @@
 ARG EDS_BASE_NOTEBOOK_IMAGE="ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04"
 
-# Latest image (depending on the environment) from I&D Harbor public repository.
 FROM ${EDS_BASE_NOTEBOOK_IMAGE}
 
 # Declaring build arguments
