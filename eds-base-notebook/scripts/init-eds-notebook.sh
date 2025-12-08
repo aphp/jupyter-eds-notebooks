@@ -17,12 +17,21 @@
 # Copying the content of the source template directory to the user's destination directory.
 # $1 (str): Path to the source template directory
 # $2 (str) : Path to the destination directory 
+# $3 (bool) : overwrite directory - true by default 
 function secure_copy_templates {
 
-    echo "[INFO] Found configuration templates(s) to copy in the following directory : $1."
-    cp -rvf "$1/." "$2"
+    echo "[INFO] Found configuration templates(s) to copy in the following directory : $2."
+
+    if [ -z "$3" ] || [ "$3" == true ] ; then
+        cp -rvf "$1/." "$2"
+        echo "[INFO] Copy successful."
+        return 0
+    fi
+
+    cp -rv --update="none" "$1/." "$2"
     echo "[INFO] Copy successful."
 }
+
 
 # Adds symlinks to read-only system files or directory that are needed for the user environment to work properly.
 # $1 (str) : User home directory
@@ -63,6 +72,7 @@ function init_user_env {
 
 echo "[INFO] Starting EDS Notebook initialization process."
 
+CONFIG_DIR="/opt/jupyter/etc"
 CONFIG_TEMPLATES_DIR="/opt/jupyter/templates"
 USER_HOME_DIR="/home/${NB_USER}"
 
@@ -78,6 +88,7 @@ if [ "$SOURCE_DIR_SIZE" -gt "$DEST_DIR_SPACE_LEFT" ]; then
 fi
 
 secure_copy_templates "$CONFIG_TEMPLATES_DIR" "$USER_HOME_DIR"
+secure_copy_templates "$CONFIG_DIR" "$USER_HOME_DIR/.jupyter" false
 populate_symlinks "$USER_HOME_DIR"
 init_user_env "$USER_HOME_DIR"
 
