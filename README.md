@@ -133,16 +133,14 @@ Instead of calling `docker build` manually, this repository provides **helper sc
 
 Typical workflow:
 
-1. Go to the `local/` directory:
+1. Use the provided build scripts to build one or several images, for example:
 
-        cd local
+        ./local/build-eds-base-notebook.sh
+        ./local/build-all.sh
 
-2. Use the provided build scripts to build one or several images, for example:
+      *Note: Your user should be in the Docker group, or you should run this script with sudo.*
 
-        ./build-eds-base-notebook.sh
-        ./build-all.sh
-
-3. Follow the script output for available options (tags, registry, etc.).
+2. Follow the script output for available options (tags, registry, etc.).
 
 The exact script names and options are documented inside the `local/` directory (and/or its own README). They are the recommended entry point for building images.
 
