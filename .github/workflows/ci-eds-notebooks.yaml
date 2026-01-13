@@ -4,6 +4,8 @@ run-name: "EDS Notebooks CI triggered by @${{ github.actor }}"
 on:
   schedule:
     - cron: "0 5 * * *"
+      branches:
+        - "dev"
   push:
     branches:
       - "dev"
@@ -11,7 +13,31 @@ on:
       - "v*.*.*"
 
 jobs:
-  eds-base-notebook:
+  eds-base-notebook-release:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    with:
+      dockerfile-path: "eds-base-notebook/Dockerfile"
+      hadolint-ignore: "DL3008,DL3016,DL3006"
+      image-name: "ghcr.io/aphp/base-eds-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04"
+      extra-build-args: |
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
+        NOTEBOOK_MAINTAINER=aphp
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: |
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+      trivy-ignore-license-ids: |
+        WTFPL
+
+  eds-base-notebook-dev:
+    if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
@@ -33,18 +59,89 @@ jobs:
       trivy-ignore-license-ids: |
         WTFPL
 
-
-  eds-ocaml-notebook:
+  eds-base-notebook-nightly:
+    if: ${{ github.event_name == 'schedule' }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
-    needs: "eds-base-notebook"
-    if: ${{ needs.eds-base-notebook.result == 'success' }}
+    with:
+      dockerfile-path: "eds-base-notebook/Dockerfile"
+      hadolint-ignore: "DL3008,DL3016,DL3006"
+      image-name: "ghcr.io/aphp/base-eds-notebook"
+      image-custom-tag: "nightly"
+      extra-build-args: |
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
+        NOTEBOOK_MAINTAINER=aphp
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: |
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+      trivy-ignore-license-ids: |
+        WTFPL
+
+
+  eds-ocaml-notebook-release:
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    needs: "eds-base-notebook-release"
+    if: ${{ needs.eds-base-notebook-release.result == 'success' }}
+    with:
+      dockerfile-path: "eds-ocaml-notebook/Dockerfile"
+      hadolint-ignore: "DL3008,DL3016"
+      image-name: "ghcr.io/aphp/base-ocaml-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04"
+      extra-build-args: |
+        EDS_BASE_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04
+        NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
+        NOTEBOOK_MAINTAINER=aphp
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: |
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+      trivy-ignore-license-ids: |
+        WTFPL
+
+  eds-ocaml-notebook-dev:
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    needs: "eds-base-notebook-dev"
+    if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
     with:
       dockerfile-path: "eds-ocaml-notebook/Dockerfile"
       hadolint-ignore: "DL3008,DL3016"
       image-name: "ghcr.io/aphp/base-ocaml-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
-        EDS_BASE_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04
+        EDS_BASE_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-dev
+        NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
+        NOTEBOOK_MAINTAINER=aphp
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: |
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+      trivy-ignore-license-ids: |
+        WTFPL
+
+  eds-ocaml-notebook-nightly:
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    needs: "eds-base-notebook-nightly"
+    if: ${{ needs.eds-base-notebook-nightly.result == 'success' }}
+    with:
+      dockerfile-path: "eds-ocaml-notebook/Dockerfile"
+      hadolint-ignore: "DL3008,DL3016"
+      image-name: "ghcr.io/aphp/base-ocaml-notebook"
+      image-custom-tag: "nightly"
+      extra-build-args: |
+        EDS_BASE_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:nightly
         NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
