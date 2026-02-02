@@ -17,6 +17,9 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+# Append commands to history file immediately (not at end of session).
+export PROMPT_COMMAND='history -a'
+
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
@@ -129,7 +132,6 @@ eval "$(mamba shell hook -s bash)"
 
 # Initializing opam switch if present (specific to OCAML envs)
 if [[ $(which opam) ]]; then
-    eval "$(opam env --switch=/opt/opam/switches/default --set-switch)"
     eval "$(opam env --switch=/opt/opam/switches/default --set-switch)"
 fi
 

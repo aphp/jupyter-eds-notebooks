@@ -69,6 +69,7 @@ RUN npm install --global --save-dev \
         yaml-language-server && \
     npm cache clean --force
 
+
 # Installing gohdfs binary
 ARG GOHDFS_VERSION="2.4.0"
 RUN curl -s -L "https://github.com/colinmarc/hdfs/releases/download/v${GOHDFS_VERSION}/gohdfs-v${GOHDFS_VERSION}-linux-amd64.tar.gz" | tar -xzvf - -C /tmp && \
@@ -125,3 +126,9 @@ ENV MAMBA_ROOT_PREFIX="${CONDA_DIR}"
 COPY --chown=${NB_USER}:${NB_GID} ./eds-base-notebook/config/templates/ /opt/jupyter/templates
 # Copying eds-notebook init script
 COPY --chown=${NB_USER}:${NB_GID} ./eds-base-notebook/scripts/init-eds-notebook.sh /usr/local/bin/before-notebook.d/init-eds-notebook.sh
+
+# for default config
+ENV JUPYTER_CONFIG_PATH="/opt/jupyter/etc/"
+
+# Copying jupyter default user setting 
+COPY --chown=${NB_USER}:${NB_GID} ./eds-base-notebook/config/lab/ /opt/jupyter/etc/lab
