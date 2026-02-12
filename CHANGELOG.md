@@ -1,15 +1,5 @@
 # Changelog
 
-## [x.x.x] - In progress
-### Added
-- 
-
-### Changed
-- 
-
-### Fixed
-- 
-
 ## [1.0.1] - 20260130
 
 ### Fixed
