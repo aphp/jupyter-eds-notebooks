@@ -50,7 +50,8 @@ RUN apt-get update --yes && \
         git \
         vim \
         curl \
-        tree &&\
+        tree \
+        dos2unix &&\
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
