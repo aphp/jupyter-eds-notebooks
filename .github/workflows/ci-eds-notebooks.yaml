@@ -57,6 +57,7 @@ jobs:
         CVE-2023-24538
         CVE-2023-24540
         CVE-2024-24790
+        CVE-2025-68121
       trivy-ignore-license-ids: |
         WTFPL
 
@@ -80,6 +81,7 @@ jobs:
         CVE-2023-24538
         CVE-2023-24540
         CVE-2024-24790
+        CVE-2025-68121
       trivy-ignore-license-ids: |
         WTFPL
 
@@ -105,6 +107,7 @@ jobs:
         CVE-2023-24538
         CVE-2023-24540
         CVE-2024-24790
+        CVE-2025-68121
       trivy-ignore-license-ids: |
         WTFPL
 
@@ -129,6 +132,7 @@ jobs:
         CVE-2023-24538
         CVE-2023-24540
         CVE-2024-24790
+        CVE-2025-68121
       trivy-ignore-license-ids: |
         WTFPL
 
@@ -153,5 +157,6 @@ jobs:
         CVE-2023-24538
         CVE-2023-24540
         CVE-2024-24790
+        CVE-2025-68121
       trivy-ignore-license-ids: |
         WTFPL
