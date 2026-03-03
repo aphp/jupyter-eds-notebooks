@@ -78,7 +78,7 @@ function init_user_env {
 
 echo "[INFO] Starting EDS Notebook initialization process."
 HDD_MOUNTING_PATH="${HDD_MOUNTING_PATH:-"/data/hdd"}"
-SSD_MOUNTING_PATH="${SSD_MOUNTING_PATH:-"/data/hdd"}"
+SSD_MOUNTING_PATH="${SSD_MOUNTING_PATH:-"/data/ssd"}"
 
 CONFIG_DIR="/opt/jupyter/etc"
 CONFIG_TEMPLATES_DIR="/opt/jupyter/templates"
