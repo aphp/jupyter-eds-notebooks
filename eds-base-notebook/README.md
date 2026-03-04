@@ -38,3 +38,13 @@ Edit `config/conda-base-env-update.yaml` to [add or remove the desired packages]
 
 **Important:**  
 Do **not** add top‑level keys such as `name`, `channels`, or any other root‑level keys to `config/conda-base-env-update.yaml`. Doing so would create a **new** `conda` environment instead of enriching the existing default one that already contains all dependencies required by JupyterLab. This would make the image non‑functional.
+
+#### Components included in the notebook image 
+
+|Component|Usage|
+|-|-|
+|dos2unix| Change files format dos to unix (remove ^m) - [issue 11](https://github.com/aphp/jupyter-eds-notebooks/issues/11) |
+|git| [ free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency. ](https://git-scm.com/) |
+|vim|  [Vi text editor](https://www.vim.org/) |
+|tree|   Tree is a recursive directory listing program that produces a depth indented listing of files, which  is  colorized  ala  dircolors  if  the LS_COLORS  environment variable is set and output is to tty. |
+|curl| curl  is  a  tool for transferring data from or to a server using URLs. It supports these protocols: DICT, FILE, FTP, FTPS, GOPHER, GOPHERS, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, MQTT, POP3, POP3S, RTMP, RTMPS, RTSP, SCP, SFTP, SMB, SMBS, SMTP, SMTPS, TELNET, TFTP, WS and WSS. |
