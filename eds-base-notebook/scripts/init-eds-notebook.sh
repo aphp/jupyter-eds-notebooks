@@ -50,10 +50,16 @@ function populate_symlinks {
     ln -nfs "${CONDA_DIR}/.condarc" "$1/.condarc"
 
     # Add symlink into home dir to /data/hdd folder into hdd
-    ln -nfs "/${HDD_MOUNTING_PATH}" "/home/${NB_USER}/hdd"
+    if [ -d "$HDD_MOUNTING_PATH" ]; then
+        echo "[INFO] HDD Symlinks populated."
+        ln -nfs "/${HDD_MOUNTING_PATH}" "/home/${NB_USER}/hdd"
+    fi
 
     # Add symlink into home dir to /data/sdd folder into sdd
-    ln -nfs "/${SSD_MOUNTING_PATH}" "/home/${NB_USER}/ssd"
+    if [ -d "$SSD_MOUNTING_PATH" ]; then
+        echo "[INFO] SSD Symlinks populated."
+        ln -nfs "/${SSD_MOUNTING_PATH}" "/home/${NB_USER}/ssd"
+    fi
 
     echo "[INFO] Symlinks populated."
 }
