@@ -45,7 +45,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
-        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04-dev
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
@@ -69,7 +69,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       extra-build-args: |
-        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04-snapshot
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
