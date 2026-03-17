@@ -92,6 +92,8 @@ RUN mamba update --all && \
         --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
     mamba clean --all -f -y
 
+RUN jupyter labextension update --all
+
 # Disabling unwanted extensions & locking the extension manager
 RUN jupyter labextension disable \
         @jupyterlab/extensionmanager-extension \

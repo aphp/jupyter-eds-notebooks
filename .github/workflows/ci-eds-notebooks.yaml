@@ -4,11 +4,10 @@ run-name: "EDS Notebooks CI triggered by @${{ github.actor }}"
 on:
   schedule:
     - cron: "0 5 * * *"
-      branches:
-        - "dev"
+
   push:
-    branches:
-      - "dev"
+    branches-ignore:
+      - "main"
     tags:
       - "v*.*.*"
 
@@ -46,7 +45,31 @@ jobs:
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
-        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04-dev
+        NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
+        NOTEBOOK_MAINTAINER=aphp
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: |
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+        CVE-2025-68121
+      trivy-ignore-license-ids: |
+        WTFPL
+
+  eds-base-notebook-snapshot:
+    if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    with:
+      dockerfile-path: "eds-base-notebook/Dockerfile"
+      hadolint-ignore: "DL3008,DL3016,DL3006"
+      image-name: "ghcr.io/aphp/base-eds-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+      extra-build-args: |
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04-snapshot
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
