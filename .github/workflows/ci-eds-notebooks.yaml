@@ -67,7 +67,7 @@ jobs:
       dockerfile-path: "eds-base-notebook/Dockerfile"
       hadolint-ignore: "DL3008,DL3016,DL3006"
       image-name: "ghcr.io/aphp/base-eds-notebook"
-      image-custom-tag: "snapshot"
+      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       extra-build-args: |
         JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
