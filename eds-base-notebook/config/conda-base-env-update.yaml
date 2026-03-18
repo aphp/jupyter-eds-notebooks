@@ -4,9 +4,6 @@ dependencies:
 
   ## Base Dependencies
   - ipywidgets
-  - bqplot
-  - matplotlib
-  - ipympl
 
   ## Rclone for browsing s3 buckets
   - rclone
