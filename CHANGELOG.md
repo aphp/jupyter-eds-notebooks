@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.2] - xxx
+## [1.0.2] - 20260318
 - Add changelog
 - Add module do2unix
 - Fix CI to excluded CVE-2025- trivy scan 
