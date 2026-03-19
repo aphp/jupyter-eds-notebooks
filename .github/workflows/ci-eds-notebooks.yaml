@@ -14,7 +14,7 @@ on:
 jobs:
   eds-base-notebook-release:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
       hadolint-ignore: "DL3008,DL3016,DL3006"
@@ -38,7 +38,7 @@ jobs:
 
   eds-base-notebook-dev:
     if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
       hadolint-ignore: "DL3008,DL3016,DL3006"
@@ -62,7 +62,7 @@ jobs:
 
   eds-base-notebook-snapshot:
     if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
       hadolint-ignore: "DL3008,DL3016,DL3006"
@@ -86,7 +86,7 @@ jobs:
 
   eds-base-notebook-nightly:
     if: ${{ github.event_name == 'schedule' }}
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
       hadolint-ignore: "DL3008,DL3016,DL3006"
@@ -110,7 +110,7 @@ jobs:
 
 
   eds-ocaml-notebook-release:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     needs: "eds-base-notebook-release"
     if: ${{ needs.eds-base-notebook-release.result == 'success' }}
     with:
@@ -135,7 +135,7 @@ jobs:
         WTFPL
 
   eds-ocaml-notebook-dev:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     needs: "eds-base-notebook-dev"
     if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
     with:
@@ -160,7 +160,7 @@ jobs:
         WTFPL
 
   eds-ocaml-notebook-nightly:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     needs: "eds-base-notebook-nightly"
     if: ${{ needs.eds-base-notebook-nightly.result == 'success' }}
     with:
