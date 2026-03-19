@@ -9,9 +9,6 @@ dependencies:
   - rclone
 
   ## Extensions
-  # Voilà
-  - voila
-
   # Jupyter Resource Usage
   - jupyter-resource-usage
 
@@ -30,3 +27,7 @@ dependencies:
 
   # Jupyter Server Proxy
   - jupyter-server-proxy
+
+  # Voilà
+  - voila
+

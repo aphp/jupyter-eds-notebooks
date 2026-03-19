@@ -50,6 +50,7 @@ RUN apt-get update --yes && \
         git \
         vim \
         curl \
+        dos2unix \
         tree &&\
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -90,6 +91,8 @@ RUN mamba update --all && \
         --name base \
         --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
     mamba clean --all -f -y
+
+RUN jupyter labextension update --all
 
 # Disabling unwanted extensions & locking the extension manager
 RUN jupyter labextension disable \
