@@ -37,7 +37,10 @@ jobs:
         WTFPL
 
   eds-base-notebook-dev:
-    if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
+    if: ${{ 
+      github.ref == 'refs/heads/dev' && 
+      github.event_name == 'push' 
+      }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
