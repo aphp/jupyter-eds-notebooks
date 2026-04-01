@@ -41,6 +41,7 @@ RUN apt-get update --yes && \
         unixodbc-dev \
         r-cran-rodbc \
         gfortran \
+        less \
         && \ 
         apt-get clean && \
         rm -rf /var/lib/apt/lists/*
