@@ -62,6 +62,10 @@ RUN mamba update --all && \
         --file "${CONDA_DIR}"/conda-r-env-update.yaml && \
     mamba clean --all -f -y
 
+# Trivy scan fix: 
+# Removing the fake service account json file that is used for testing gargle package in R, as it is not needed in the final image and can cause confusion for users who might think it is a real service account key file.
+RUN rm -rf "${CONDA_DIR}"/lib/R/library/gargle/extdata/fake_service_account.json
+
 # Setting permissions and freezing base env
 RUN fix-permissions "/home/${NB_USER}" && \
     chown -R root:root "${CONDA_DIR}" && \
