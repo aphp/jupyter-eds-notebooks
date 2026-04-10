@@ -143,7 +143,7 @@ jobs:
     if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
-      image-name: "ghcr.io/aphp/base-r-notebook"
+      image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
         JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-dev
@@ -160,7 +160,7 @@ jobs:
     if: ${{ needs.eds-base-notebook-nightly.result == 'success' }}
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
-      image-name: "ghcr.io/aphp/base-r-notebook"
+      image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04"
       extra-build-args: |
         JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
@@ -177,7 +177,7 @@ jobs:
     if: ${{ needs.eds-base-notebook-snapshot.result == 'success' }}
     with:
       dockerfile-path: "eds-base-notebook/Dockerfile"
-      image-name: "ghcr.io/aphp/base-r-notebook"
+      image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       extra-build-args: |
         JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-snapshot
