@@ -119,23 +119,6 @@ jobs:
       trivy-ignore-vuln-ids: *trivy-ignore-vuln-ids
       trivy-ignore-license-ids: *trivy-ignore-license-ids
 
-  eds-ocaml-notebook-snapshot:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    needs: "eds-base-notebook-snapshot"
-    if: ${{ needs.eds-base-notebook-snapshot.result == 'success' }}
-    with:
-      dockerfile-path: "eds-ocaml-notebook/Dockerfile"
-      image-name: "ghcr.io/aphp/base-ocaml-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-snapshot
-        NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      hadolint-ignore: *hadolint-ignore
-      dockle-ignore: *dockle-ignore
-      trivy-ignore-vuln-ids: *trivy-ignore-vuln-ids
-      trivy-ignore-license-ids: *trivy-ignore-license-ids
-
 
   eds-r-notebook-dev:
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
@@ -146,7 +129,7 @@ jobs:
       image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-dev
+        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -180,7 +163,7 @@ jobs:
       image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-snapshot
+        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
