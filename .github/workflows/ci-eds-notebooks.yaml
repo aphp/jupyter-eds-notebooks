@@ -21,7 +21,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       dockle-ignore: &dockle-ignore "CIS-DI-0010,DKL-DI-0001"
@@ -44,7 +44,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -60,7 +60,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -76,7 +76,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -94,7 +94,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-ocaml-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-dev
+        EDS_BASE_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-dev
         NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -111,7 +111,7 @@ jobs:
       image-name: "ghcr.io/aphp/base-ocaml-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04
+        EDS_BASE_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -129,7 +129,7 @@ jobs:
       image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -146,7 +146,7 @@ jobs:
       image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
@@ -163,7 +163,7 @@ jobs:
       image-name: "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
+        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
         NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
       hadolint-ignore: *hadolint-ignore
