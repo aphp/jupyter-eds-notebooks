@@ -12,20 +12,40 @@ on:
       - "v*.*.*"
 
 jobs:
-  eds-base-notebook-release:
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+  eds-base-notebook:
+    name: "eds-base-notebook-${{ matrix.variant }}"
+    strategy:
+      matrix:
+        include:
+          - variant: "release"
+            image-custom-tag: "x86_64-ubuntu-24.04"
+            jupyter-image: "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
+            condition: "release"
+          - variant: "dev"
+            image-custom-tag: "x86_64-ubuntu-24.04-dev"
+            jupyter-image: "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
+            condition: "dev"
+          - variant: "snapshot"
+            image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+            jupyter-image: "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
+            condition: "snapshot"
+          - variant: "nightly"
+            image-custom-tag: "x86_64-ubuntu-24.04"
+            jupyter-image: "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
+            condition: "nightly"
+    if: &common-variant-filter ${{ (matrix.condition == 'release' && startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push') || (matrix.condition == 'dev' && github.ref == 'refs/heads/dev' && github.event_name == 'push') || (matrix.condition == 'snapshot' && github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push') || (matrix.condition == 'nightly' && github.event_name == 'schedule') }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    with:
+    with: &common-eds-base-with
       dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016,DL3006"
+      hadolint-ignore: &common-hadolint "DL3008,DL3016,DL3006"
       image-name: "ghcr.io/aphp/base-eds-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04"
+      image-custom-tag: "${{ matrix.image-custom-tag }}"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
+        JUPYTER_NOTEBOOK_IMAGE=${{ matrix.jupyter-image }}
         NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
+      dockle-ignore: &common-dockle "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: &common-trivy-vuln |
         CVE-2024-21508
         CVE-2024-21511
         CVE-2024-45337
@@ -33,229 +53,64 @@ jobs:
         CVE-2023-24540
         CVE-2024-24790
         CVE-2025-68121
-      trivy-ignore-license-ids: |
+      trivy-ignore-license-ids: &common-trivy-license |
         WTFPL
 
-  eds-base-notebook-dev:
-    if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
+  eds-ocaml-notebook:
+    name: "eds-ocaml-notebook-${{ matrix.variant }}"
+    needs: eds-base-notebook
+    strategy:
+      matrix:
+        include:
+          - variant: "dev"
+            image-custom-tag: "x86_64-ubuntu-24.04-dev"
+            base-image: "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-dev"
+            condition: "dev"
+          - variant: "nightly"
+            image-custom-tag: "x86_64-ubuntu-24.04"
+            base-image: "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04"
+            condition: "nightly"
+          - variant: "snapshot"
+            image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+            base-image: "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-snapshot"
+            condition: "snapshot"
+    if: ${{ needs.eds-base-notebook.result == 'success' && *common-variant-filter }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016,DL3006"
-      image-name: "ghcr.io/aphp/base-eds-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-dev"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
-
-  eds-base-notebook-snapshot:
-    if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016,DL3006"
-      image-name: "ghcr.io/aphp/base-eds-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
-
-  eds-base-notebook-nightly:
-    if: ${{ github.event_name == 'schedule' }}
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016,DL3006"
-      image-name: "ghcr.io/aphp/base-eds-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-BASE-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
-
-
-  eds-ocaml-notebook-dev:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    needs: "eds-base-notebook-dev"
-    if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
-    with:
+      <<: *common-eds-base-with
       dockerfile-path: "eds-ocaml-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016"
       image-name: "ghcr.io/aphp/base-ocaml-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-dev"
+      image-custom-tag: "${{ matrix.image-custom-tag }}"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-dev
+        JUPYTER_NOTEBOOK_IMAGE=${{ matrix.base-image }}
         NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
 
-  eds-ocaml-notebook-nightly:
+  eds-r-notebook:
+    name: "eds-r-notebook-${{ matrix.variant }}"
+    needs: eds-base-notebook
+    strategy:
+      matrix:
+        include:
+          - variant: "dev"
+            image-custom-tag: "x86_64-ubuntu-24.04-dev"
+            jupyter-image: "quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-dev"
+            condition: "dev"
+          - variant: "nightly"
+            image-custom-tag: "x86_64-ubuntu-24.04"
+            jupyter-image: "quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04"
+            condition: "nightly"
+          - variant: "snapshot"
+            image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+            jupyter-image: "quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-snapshot"
+            condition: "snapshot"
+    if: ${{ needs.eds-base-notebook.result == 'success' && *common-variant-filter }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    needs: "eds-base-notebook-nightly"
-    if: ${{ needs.eds-base-notebook-nightly.result == 'success' }}
     with:
-      dockerfile-path: "eds-ocaml-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016"
-      image-name: "ghcr.io/aphp/base-ocaml-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
-
-  eds-ocaml-notebook-snapshot:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    needs: "eds-base-notebook-snapshot"
-    if: ${{ needs.eds-base-notebook-snapshot.result == 'success' }}
-    with:
-      dockerfile-path: "eds-ocaml-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016"
-      image-name: "ghcr.io/aphp/base-ocaml-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-snapshot
-        NOTEBOOK_IMAGE=EDS-OCAML-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
-
-
-  eds-r-notebook-dev:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    needs: "eds-base-notebook-dev"
-    if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
-    with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016"
+      <<: *common-eds-base-with
       image-name: "ghcr.io/aphp/base-r-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-dev"
+      image-custom-tag: "${{ matrix.image-custom-tag }}"
       extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-dev
+        JUPYTER_NOTEBOOK_IMAGE=${{ matrix.jupyter-image }}
         NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
         NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
-
-  eds-r-notebook-nightly:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    needs: "eds-base-notebook-nightly"
-    if: ${{ needs.eds-base-notebook-nightly.result == 'success' }}
-    with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016"
-      image-name: "ghcr.io/aphp/base-r-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
-
-  eds-r-notebook-snapshot:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    needs: "eds-base-notebook-snapshot"
-    if: ${{ needs.eds-base-notebook-snapshot.result == 'success' }}
-    with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: "DL3008,DL3016"
-      image-name: "ghcr.io/aphp/base-r-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
-      extra-build-args: |
-        JUPYTER_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-snapshot
-        NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
-      trivy-ignore-vuln-ids: |
-        CVE-2024-21508
-        CVE-2024-21511
-        CVE-2024-45337
-        CVE-2023-24538
-        CVE-2023-24540
-        CVE-2024-24790
-        CVE-2025-68121
-      trivy-ignore-license-ids: |
-        WTFPL
