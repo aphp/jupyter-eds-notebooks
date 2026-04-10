@@ -33,11 +33,10 @@ jobs:
             image-custom-tag: "x86_64-ubuntu-24.04"
             jupyter-image: "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
             condition: "nightly"
-    if: &common-variant-filter ${{ (matrix.condition == 'release' && startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push') || (matrix.condition == 'dev' && github.ref == 'refs/heads/dev' && github.event_name == 'push') || (matrix.condition == 'snapshot' && github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push') || (matrix.condition == 'nightly' && github.event_name == 'schedule') }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
-    with: &common-eds-base-with
+    with:  &common-eds-base-with
       dockerfile-path: "eds-base-notebook/Dockerfile"
-      hadolint-ignore: &common-hadolint "DL3008,DL3016,DL3006"
+      hadolint-ignore: "DL3008,DL3016,DL3006"
       image-name: "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "${{ matrix.image-custom-tag }}"
       extra-build-args: |
@@ -74,7 +73,6 @@ jobs:
             image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
             base-image: "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-snapshot"
             condition: "snapshot"
-    if: ${{ needs.eds-base-notebook.result == 'success' && *common-variant-filter }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       <<: *common-eds-base-with
@@ -104,7 +102,6 @@ jobs:
             image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
             jupyter-image: "quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04-snapshot"
             condition: "snapshot"
-    if: ${{ needs.eds-base-notebook.result == 'success' && *common-variant-filter }}
     uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       <<: *common-eds-base-with
