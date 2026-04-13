@@ -48,7 +48,7 @@ jobs:
     with:
       dockerfile-path: *docker-path
       image-name: *image-name
-      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+      image-custom-tag: "x86_64-ubuntu-24.04"
       base-notebook-image: *base-notebook-image
       notebook-image: *notebook-image
 

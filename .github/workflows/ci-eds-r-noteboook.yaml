@@ -12,50 +12,33 @@ on:
       - "v*.*.*"
 
 jobs:
+  eds-r-notebook-snapshot:
+    if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    with:
+      dockerfile-path: &docker-path "eds-base-notebook/Dockerfile"
+      image-name: &image-name  "ghcr.io/aphp/r-eds-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+      base-notebook-image: &base-notebook-image "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
+      notebook-image: &notebook-image "EDS-R-NOTEBOOK"
+
   eds-r-notebook-dev:
     if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      image-name: "ghcr.io/aphp/r-eds-notebook"
+      dockerfile-path: *docker-path 
+      image-name: *image-name
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
-      extra-build-args: |
-        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      hadolint-ignore: *hadolint-ignore
-      dockle-ignore: *dockle-ignore
-      trivy-ignore-vuln-ids: *trivy-ignore-vuln-ids
-      trivy-ignore-license-ids: *trivy-ignore-license-ids
+      base-notebook-image: *base-notebook-image
+      notebook-image: *notebook-image
+
 
   eds-r-notebook-nightly:
     if: ${{ github.event_name == 'schedule' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      image-name: "ghcr.io/aphp/r-eds-notebook"
+      dockerfile-path: *docker-path
+      image-name: *image-name
       image-custom-tag: "x86_64-ubuntu-24.04"
-      extra-build-args: |
-        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      hadolint-ignore: *hadolint-ignore
-      dockle-ignore: *dockle-ignore
-      trivy-ignore-vuln-ids: *trivy-ignore-vuln-ids
-      trivy-ignore-license-ids: *trivy-ignore-license-ids
-
-  eds-r-notebook-snapshot:
-    if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
-    uses: "./.github/workflows/build-notebook.yml"
-    with:
-      dockerfile-path: "eds-base-notebook/Dockerfile"
-      image-name: "ghcr.io/aphp/r-eds-notebook"
-      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
-      extra-build-args: |
-        JUPYTER_BASE_NOTEBOOK_IMAGE=quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04
-        NOTEBOOK_IMAGE=EDS-R-NOTEBOOK
-        NOTEBOOK_MAINTAINER=aphp
-      hadolint-ignore: *hadolint-ignore
-      dockle-ignore: *dockle-ignore
-      trivy-ignore-vuln-ids: *trivy-ignore-vuln-ids
-      trivy-ignore-license-ids: *trivy-ignore-license-ids
+      base-notebook-image: *base-notebook-image
+      notebook-image: *notebook-image
