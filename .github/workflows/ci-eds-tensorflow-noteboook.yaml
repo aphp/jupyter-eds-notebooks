@@ -1,5 +1,5 @@
-name: "ci-eds-r-notebooks"
-run-name: "EDS R Notebook CI triggered by @${{ github.actor }}"
+name: "ci-eds-tensorflow-notebooks"
+run-name: "EDS TENSORFLOW Notebook CI triggered by @${{ github.actor }}"
 
 on:
   schedule:
@@ -12,17 +12,17 @@ on:
       - "v*.*.*"
 
 jobs:
-  eds-r-notebook-snapshot:
+  eds-tensorflow-notebook-snapshot:
     if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
       dockerfile-path: &docker-path "eds-base-notebook/Dockerfile"
-      image-name: &image-name  "ghcr.io/aphp/r-eds-notebook"
+      image-name: &image-name  "ghcr.io/aphp/tensorflow-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
-      base-notebook-image: &base-notebook-image "quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04"
-      notebook-image: &notebook-image "EDS-R-NOTEBOOK"
+      base-notebook-image: &base-notebook-image "quay.io/jupyter/tensorflow-notebook:x86_64-ubuntu-24.04"
+      notebook-image: &notebook-image "EDS-TENSORFLOW-NOTEBOOK"
 
-  eds-r-notebook-dev:
+  eds-tensorflow-notebook-dev:
     if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
@@ -33,7 +33,7 @@ jobs:
       notebook-image: *notebook-image
 
 
-  eds-r-notebook-nightly:
+  eds-tensorflow-notebook-nightly:
     if: ${{ github.event_name == 'schedule' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
