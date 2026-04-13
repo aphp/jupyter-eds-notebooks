@@ -1,0 +1,46 @@
+name: Build Notebook
+
+on:
+  workflow_call:
+    inputs:
+      dockerfile-path:
+        required: true
+        type: string
+      image-name:
+        required: true
+        type: string
+      image-custom-tag:
+        required: true
+        type: string
+      base-notebook-image:
+        required: true
+        type: string
+      notebook-image:
+        required: true
+        type: string
+
+jobs:
+  build:
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
+    with:
+      dockerfile-path: ${{ inputs.dockerfile-path }}
+      hadolint-ignore: "DL3008,DL3016,DL3006"
+      image-name: ${{ inputs.image-name }}
+      image-custom-tag: ${{ inputs.image-custom-tag }}
+      extra-build-args: 
+        BASE_NOTEBOOK_IMAGE=${{ inputs.base-notebook-image }}
+        NOTEBOOK_IMAGE=${{ inputs.notebook-image }}
+        NOTEBOOK_MAINTAINER=aphp
+
+        ${{ inputs.extra-build-args }}
+      dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
+      trivy-ignore-vuln-ids: |
+        CVE-2024-21508
+        CVE-2024-21511
+        CVE-2024-45337
+        CVE-2023-24538
+        CVE-2023-24540
+        CVE-2024-24790
+        CVE-2025-68121
+      trivy-ignore-license-ids: |
+        WTFPL
