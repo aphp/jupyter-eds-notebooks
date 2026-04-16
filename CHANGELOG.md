@@ -1,10 +1,10 @@
 # Changelog
-## [1.1.0] - 20260318
+## [1.1.0] - 20260416
 ### Added
-- Add R image 
+- Add R in new eds image
 
 ### Changed
-- CI Workflow 
+- CI Workflow to build new image
 
 ## [1.0.2] - 20260318
 ### Fixed
