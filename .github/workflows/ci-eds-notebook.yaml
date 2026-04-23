@@ -52,7 +52,7 @@ jobs:
       base-notebook-image: *base-notebook-image
       notebook-image: *notebook-image
 
-  eds-ocaml-notebook-nightly:
+  eds-ocaml-notebook-release:
     if: ${{ needs.eds-base-notebook.result == 'success' }}
     uses: "./.github/workflows/build-notebook.yml"
     needs: "eds-base-notebook-release"
