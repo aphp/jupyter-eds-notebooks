@@ -52,17 +52,6 @@ jobs:
       base-notebook-image: *base-notebook-image
       notebook-image: *notebook-image
 
-  eds-ocaml-notebook-release:
-    if: ${{ needs.eds-base-notebook.result == 'success' }}
-    uses: "./.github/workflows/build-notebook.yml"
-    needs: "eds-base-notebook-release"
-    with:
-      dockerfile-path: *o-docker-path
-      image-name: *o-image-name 
-      image-custom-tag: "x86_64-ubuntu-24.04"
-      base-notebook-image: *o-base-notebook-image
-      notebook-image:  *o-notebook-image
-
   eds-ocaml-notebook-dev:
     if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
     uses: "./.github/workflows/build-notebook.yml"
@@ -85,5 +74,13 @@ jobs:
       base-notebook-image: *o-base-notebook-image
       notebook-image:  *o-notebook-image
 
-
-
+  eds-ocaml-notebook-release:
+    if: ${{ needs.eds-base-notebook.result == 'success' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    needs: "eds-base-notebook-release"
+    with:
+      dockerfile-path: *o-docker-path
+      image-name: *o-image-name 
+      image-custom-tag: "x86_64-ubuntu-24.04"
+      base-notebook-image: *o-base-notebook-image
+      notebook-image:  *o-notebook-image
