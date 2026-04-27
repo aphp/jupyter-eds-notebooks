@@ -1,0 +1,86 @@
+name: "ci-eds-notebooks"
+run-name: "EDS Notebooks CI triggered by @${{ github.actor }}"
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+
+  push:
+    branches-ignore:
+      - "main"
+    tags:
+      - "v*.*.*"
+
+jobs:
+  eds-base-notebook-release:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    uses: "./.github/workflows/build-notebook.yml"
+    with:
+      dockerfile-path: &docker-path "eds-base-notebook/Dockerfile"
+      image-name: &image-name  "ghcr.io/aphp/base-eds-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04"
+      base-notebook-image: &base-notebook-image "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
+      notebook-image: &notebook-image "EDS-BASE-NOTEBOOK"
+
+  eds-base-notebook-dev:
+    if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    with:
+      dockerfile-path: *docker-path 
+      image-name: *image-name
+      image-custom-tag: "x86_64-ubuntu-24.04-dev"
+      base-notebook-image: *base-notebook-image
+      notebook-image: *notebook-image
+
+  eds-base-notebook-snapshot:
+    if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    with:
+      dockerfile-path: *docker-path
+      image-name: *image-name
+      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+      base-notebook-image: *base-notebook-image
+      notebook-image: *notebook-image
+
+  eds-base-notebook-nightly:
+    if: ${{ github.event_name == 'schedule' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    with:
+      dockerfile-path: *docker-path
+      image-name: *image-name
+      image-custom-tag: "x86_64-ubuntu-24.04-nightly"
+      base-notebook-image: *base-notebook-image
+      notebook-image: *notebook-image
+
+  eds-ocaml-notebook-dev:
+    if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    needs: "eds-base-notebook-dev"
+    with:
+      dockerfile-path: &o-docker-path "eds-ocaml-notebook/Dockerfile"
+      image-name: &o-image-name "ghcr.io/aphp/base-ocaml-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04-dev"
+      base-notebook-image: &o-base-notebook-image "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-dev"
+      notebook-image:  &o-notebook-image "EDS-OCAML-NOTEBOOK"
+
+  eds-ocaml-notebook-nightly:
+    uses: "./.github/workflows/build-notebook.yml"
+    needs: "eds-base-notebook-nightly"
+    if: ${{ needs.eds-base-notebook-nightly.result == 'success' }}
+    with:
+      dockerfile-path: *o-docker-path
+      image-name: *o-image-name 
+      image-custom-tag: "x86_64-ubuntu-24.04-nightly"
+      base-notebook-image: *o-base-notebook-image
+      notebook-image:  *o-notebook-image
+
+  eds-ocaml-notebook-release:
+    if: ${{ needs.eds-base-notebook.result == 'success' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    needs: "eds-base-notebook-release"
+    with:
+      dockerfile-path: *o-docker-path
+      image-name: *o-image-name 
+      image-custom-tag: "x86_64-ubuntu-24.04"
+      base-notebook-image: *o-base-notebook-image
+      notebook-image:  *o-notebook-image
