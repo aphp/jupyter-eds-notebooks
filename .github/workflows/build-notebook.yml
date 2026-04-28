@@ -31,8 +31,6 @@ jobs:
         BASE_IMAGE=${{ inputs.base-notebook-image }}
         NOTEBOOK_IMAGE=${{ inputs.notebook-image }}
         NOTEBOOK_MAINTAINER=aphp
-
-        ${{ inputs.extra-build-args }}
       dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
       trivy-ignore-vuln-ids: |
         CVE-2024-21508
