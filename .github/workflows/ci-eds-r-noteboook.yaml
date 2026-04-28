@@ -16,7 +16,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
-      dockerfile-path: &docker-path "eds-base-notebook/Dockerfile"
+      dockerfile-path: &docker-path "eds-image-hardening/Dockerfile"
       image-name: &image-name  "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       base-notebook-image: &base-notebook-image "quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04"
