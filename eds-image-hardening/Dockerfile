@@ -1,7 +1,5 @@
-# Defining global build argument
 ARG BASE_IMAGE="quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
 
-# Latest image (depending on the environment) from Jupyter Quay.io repository
 FROM ${BASE_IMAGE}
 
 # Declaring build arguments
