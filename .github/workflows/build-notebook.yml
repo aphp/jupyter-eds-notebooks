@@ -28,7 +28,7 @@ jobs:
       image-name: ${{ inputs.image-name }}
       image-custom-tag: ${{ inputs.image-custom-tag }}
       extra-build-args: 
-        BASE_NOTEBOOK_IMAGE=${{ inputs.base-notebook-image }}
+        BASE_IMAGE=${{ inputs.base-notebook-image }}
         NOTEBOOK_IMAGE=${{ inputs.notebook-image }}
         NOTEBOOK_MAINTAINER=aphp
 
