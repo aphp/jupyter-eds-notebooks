@@ -80,8 +80,8 @@ RUN curl -s -L "https://github.com/colinmarc/hdfs/releases/download/v${GOHDFS_VE
 USER ${NB_USER}
 
 # Copying config files for base environment update & custom conda configuration
-COPY --chown=${NB_USER}:${NB_GID} "./eds-base-notebook/config/conda-base-env-update.yaml" "${CONDA_DIR}/conda-base-env-update.yaml"
-COPY --chown=${NB_USER}:${NB_GID} "./eds-base-notebook/config/.condarc" "${CONDA_DIR}/.condarc"
+COPY --chown=${NB_USER}:${NB_GID} "./eds-image-hardening/config/conda-base-env-update.yaml" "${CONDA_DIR}/conda-base-env-update.yaml"
+COPY --chown=${NB_USER}:${NB_GID} "./eds-image-hardening/config/.condarc" "${CONDA_DIR}/.condarc"
 
 # Installing environment dependencies according to the YAML env file copied earlier
 RUN mamba update --all && \
@@ -124,12 +124,12 @@ ENV MAMBA_ROOT_PREFIX="${CONDA_DIR}"
 
 
 # Copying jupyter config templates
-COPY --chown=${NB_USER}:${NB_GID} ./eds-base-notebook/config/templates/ /opt/jupyter/templates
+COPY --chown=${NB_USER}:${NB_GID} ./eds-image-hardening/config/templates/ /opt/jupyter/templates
 # Copying eds-notebook init script
-COPY --chown=${NB_USER}:${NB_GID} ./eds-base-notebook/scripts/init-eds-notebook.sh /usr/local/bin/before-notebook.d/init-eds-notebook.sh
+COPY --chown=${NB_USER}:${NB_GID} ./eds-image-hardening/scripts/init-eds-notebook.sh /usr/local/bin/before-notebook.d/init-eds-notebook.sh
 
 # for default config
 ENV JUPYTER_CONFIG_PATH="/opt/jupyter/etc/"
 
 # Copying jupyter default user setting 
-COPY --chown=${NB_USER}:${NB_GID} ./eds-base-notebook/config/lab/ /opt/jupyter/etc/lab
+COPY --chown=${NB_USER}:${NB_GID} ./eds-image-hardening/config/lab/ /opt/jupyter/etc/lab
