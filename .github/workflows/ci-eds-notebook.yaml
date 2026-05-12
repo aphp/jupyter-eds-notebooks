@@ -16,7 +16,7 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
-      dockerfile-path: &docker-path "eds-base-notebook/Dockerfile"
+      dockerfile-path: &docker-path "eds-image-hardening/Dockerfile"
       image-name: &image-name  "ghcr.io/aphp/base-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04"
       base-notebook-image: &base-notebook-image "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"

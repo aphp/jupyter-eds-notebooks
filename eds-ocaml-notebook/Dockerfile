@@ -1,6 +1,6 @@
-ARG JUPYTER_BASE_NOTEBOOK_IMAGE="ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04"
+ARG BASE_IMAGE="ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04"
 
-FROM ${JUPYTER_BASE_NOTEBOOK_IMAGE}
+FROM ${BASE_IMAGE}
 
 # Declaring build arguments
 ARG GIT_PROJECT

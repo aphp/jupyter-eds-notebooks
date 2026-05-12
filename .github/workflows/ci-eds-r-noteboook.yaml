@@ -16,7 +16,7 @@ jobs:
     if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
-      dockerfile-path: &docker-path "eds-base-notebook/Dockerfile"
+      dockerfile-path: &docker-path "eds-image-hardening/Dockerfile"
       image-name: &image-name  "ghcr.io/aphp/r-eds-notebook"
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       base-notebook-image: &base-notebook-image "quay.io/jupyter/r-notebook:x86_64-ubuntu-24.04"
@@ -32,9 +32,18 @@ jobs:
       base-notebook-image: *base-notebook-image
       notebook-image: *notebook-image
 
-
   eds-r-notebook-nightly:
     if: ${{ github.event_name == 'schedule' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    with:
+      dockerfile-path: *docker-path
+      image-name: *image-name
+      image-custom-tag: "x86_64-ubuntu-24.04-nightly"
+      base-notebook-image: *base-notebook-image
+      notebook-image: *notebook-image
+
+  eds-r-notebook-release:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
       dockerfile-path: *docker-path
@@ -42,3 +51,4 @@ jobs:
       image-custom-tag: "x86_64-ubuntu-24.04"
       base-notebook-image: *base-notebook-image
       notebook-image: *notebook-image
+
