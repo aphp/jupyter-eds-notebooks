@@ -10,6 +10,6 @@ depends: [
   "ocaml" 
   "base"
   "base-bytes"
-  "jupyter" 
+  "jupyter" {>= "2.20.0"} #Forcing latest jupyter kernel version to fixe CVE-2026-44727.
   "astring"
 ]
