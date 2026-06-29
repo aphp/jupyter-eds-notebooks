@@ -52,7 +52,18 @@ jobs:
       base-notebook-image: *base-notebook-image
       notebook-image: *notebook-image
 
-  eds-ocaml-notebook-dev:
+  eds-ocaml-notebook-snapshot:
+    if: ${{ needs.eds-base-notebook-snapshot.result == 'success' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    needs: "eds-base-notebook-dev"
+    with:
+      dockerfile-path: &o-docker-path "eds-ocaml-notebook/Dockerfile"
+      image-name: &o-image-name "ghcr.io/aphp/base-ocaml-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
+      base-notebook-image: &o-base-notebook-image "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-snapshot"
+      notebook-image:  &o-notebook-image "EDS-OCAML-NOTEBOOK"
+      
+eds-ocaml-notebook-dev:
     if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
     uses: "./.github/workflows/build-notebook.yml"
     needs: "eds-base-notebook-dev"
