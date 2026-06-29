@@ -55,7 +55,7 @@ jobs:
   eds-ocaml-notebook-snapshot:
     if: ${{ needs.eds-base-notebook-snapshot.result == 'success' }}
     uses: "./.github/workflows/build-notebook.yml"
-    needs: "eds-base-notebook-dev"
+    needs: "eds-base-notebook-snapshot"
     with:
       dockerfile-path: &o-docker-path "eds-ocaml-notebook/Dockerfile"
       image-name: &o-image-name "ghcr.io/aphp/base-ocaml-notebook"
