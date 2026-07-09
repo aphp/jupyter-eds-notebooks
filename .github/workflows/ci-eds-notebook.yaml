@@ -82,7 +82,7 @@ jobs:
       dockerfile-path: *o-docker-path
       image-name: *o-image-name 
       image-custom-tag: "x86_64-ubuntu-24.04-nightly"
-      base-notebook-image: *o-base-notebook-image
+      base-notebook-image: &o-base-notebook-image "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-nightly"
       notebook-image:  *o-notebook-image
 
   eds-ocaml-notebook-release:
