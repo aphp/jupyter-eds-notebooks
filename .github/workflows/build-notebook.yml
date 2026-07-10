@@ -27,7 +27,7 @@ jobs:
       hadolint-ignore: "DL3008,DL3016,DL3006"
       image-name: ${{ inputs.image-name }}
       image-custom-tag: ${{ inputs.image-custom-tag }}
-      extra-build-args: 
+      extra-build-args: |
         NOTEBOOK_MAINTAINER=aphp
         BASE_IMAGE=${{ inputs.base-notebook-image }}
         NOTEBOOK_IMAGE=${{ inputs.notebook-image }}
