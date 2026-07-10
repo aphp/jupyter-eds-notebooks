@@ -42,5 +42,5 @@ jobs:
         CVE-2025-68121
       trivy-ignore-license-ids: |
         WTFPL
-      trivy-ignore-secrets: |
+      trivy-ignore-files: |
         /opt/conda/lib/R/library/gargle/extdata/fake_service_account.json
