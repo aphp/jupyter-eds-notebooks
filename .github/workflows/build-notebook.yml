@@ -21,7 +21,7 @@ on:
 
 jobs:
   build:
-    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@dev"
+    uses: "aphp/ci-workflows/.github/workflows/container-ci.yml@main"
     with:
       dockerfile-path: ${{ inputs.dockerfile-path }}
       hadolint-ignore: "DL3008,DL3016,DL3006"
