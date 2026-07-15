@@ -7,9 +7,9 @@ bug-reports: "https://github.com/aphp/jupyter-eds-notebooks"
 synopsis: "Base OPAM packages for the OCAML Jupyter Kernel"
 description: "Base OPAM packages for the OCAML Jupyter Kernel"
 depends: [
-  "ocaml" {< "5.0.0"} #Pining down to OCAML 4 because OCAML 5 is not supported yet -> https://github.com/akabe/ocaml-jupyter/issues/202
+  "ocaml" 
   "base"
   "base-bytes"
-  "jupyter" {>= "2.8.3"} #Forcing latest jupyter kernel version to let OPAM handle the dependency tree as the Kernel has last been updated in 2023.
+  "jupyter" {>= "2.20.0"} #Forcing latest jupyter kernel version to fixe CVE-2026-44727.
   "astring"
 ]

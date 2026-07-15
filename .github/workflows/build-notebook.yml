@@ -27,7 +27,7 @@ jobs:
       hadolint-ignore: "DL3008,DL3016,DL3006"
       image-name: ${{ inputs.image-name }}
       image-custom-tag: ${{ inputs.image-custom-tag }}
-      extra-build-args: 
+      extra-build-args: |
         NOTEBOOK_MAINTAINER=aphp
         BASE_IMAGE=${{ inputs.base-notebook-image }}
         NOTEBOOK_IMAGE=${{ inputs.notebook-image }}
@@ -42,3 +42,5 @@ jobs:
         CVE-2025-68121
       trivy-ignore-license-ids: |
         WTFPL
+      trivy-ignore-files: |
+        /opt/conda/lib/R/library/gargle/extdata/fake_service_account.json
