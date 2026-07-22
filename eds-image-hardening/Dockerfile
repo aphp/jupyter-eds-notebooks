@@ -41,6 +41,7 @@ RUN apt-get update --yes && \
         make \
         gcc \
         g++ \
+        nodejs \
         npm \
         binutils \
         libgl1 \
@@ -55,11 +56,13 @@ RUN apt-get update --yes && \
 
 # Installing language-servers Lab extensions as global packages, fto prevent the node_module folder from being erased at runtime
 # Pining down version of unified-language-server (notably used for markdown) as per https://github.com/jupyter-lsp/jupyterlab-lsp/issues/1040#issuecomment-2416042706
-RUN npm install --global --save-dev \
+RUN npm install -g npm-check-updates &&\
+    npm install --global --save-dev \
         bash-language-server \
         dockerfile-language-server-nodejs \
         pyright \
         sql-language-server \
+        tar@^7.5.21\
         typescript-language-server \
         unified-language-server@0.3.0 \
         vscode-css-languageserver-bin \
