@@ -21,56 +21,38 @@ LABEL git-commit-sha=${GIT_COMMIT_SHA}
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+
 # Switching to root user for global packages installations
 USER root
 
 # Persisting Image informations in env
-ENV NOTEBOOK_IMAGE=${NOTEBOOK_IMAGE}
-ENV NOTEBOOK_MAINTAINER=${NOTEBOOK_MAINTAINER}
-ENV NOTEBOOK_GIT_PROJECT=${GIT_PROJECT}
-ENV NOTEBOOK_GIT_BRANCH=${GIT_BRANCH}
-ENV NOTEBOOK_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
+ENV NOTEBOOK_IMAGE=${NOTEBOOK_IMAGE} \
+    NOTEBOOK_MAINTAINER=${NOTEBOOK_MAINTAINER} \
+    NOTEBOOK_GIT_PROJECT=${GIT_PROJECT} \
+    NOTEBOOK_GIT_BRANCH=${GIT_BRANCH} \
+    NOTEBOOK_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
 
 # Installing extra requirements
 RUN apt-get update --yes && \
     apt-get upgrade --yes && \
     apt-get install --yes --no-install-recommends \
         bash-completion \
-        fonts-firacode \
-        openssh-client \
-        make \
-        gcc \
-        g++ \
-        nodejs \
-        npm \
         binutils \
-        libgl1 \
-        libglx-mesa0 \
-        git \
-        vim \
         curl \
         dos2unix \
-        tree &&\
+        fonts-firacode \
+        gcc \
+        g++ \
+        git \
+        libgl1 \
+        libglx-mesa0 \
+        make \
+        openssh-client \
+        tree \
+        vim \
+        &&\
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Installing language-servers Lab extensions as global packages, fto prevent the node_module folder from being erased at runtime
-# Pining down version of unified-language-server (notably used for markdown) as per https://github.com/jupyter-lsp/jupyterlab-lsp/issues/1040#issuecomment-2416042706
-RUN npm install -g npm-check-updates &&\
-    npm install --global --save-dev \
-        bash-language-server \
-        dockerfile-language-server-nodejs \
-        pyright \
-        sql-language-server \
-        tar@^7.5.21\
-        typescript-language-server \
-        unified-language-server@0.3.0 \
-        vscode-css-languageserver-bin \
-        vscode-html-languageserver-bin \
-        vscode-json-languageserver-bin \
-        yaml-language-server && \
-    npm cache clean --force
-
 
 # Installing gohdfs binary
 ARG GOHDFS_VERSION="2.4.0"
@@ -106,11 +88,20 @@ RUN jupyter labextension disable \
 # Switching to root user to set all permissions after packages installations
 USER root
 
+# Add nodejs tools 
+COPY  "./eds-image-hardening/config/npm-packages.txt" "/tmp/npm-packages.txt"
+
+RUN xargs npm install -g < /tmp/npm-packages.txt \
+ && npm install -g npm-check-updates \
+ && npm cache clean --force
+
+ # Clean up
+RUN rm  /tmp/npm-packages.txt
+
 # Setting permissions and freezing base env
 RUN fix-permissions "/home/${NB_USER}" && \
     chown -R root:root "${CONDA_DIR}" && \
     chmod -R 755 "${CONDA_DIR}"
-
 
 # Switching to NB_USER that will be the runtime notebook user  
 USER ${NB_USER}
