@@ -23,11 +23,10 @@ dependencies:
   - jupyterlab-lsp
   - jupyter-lsp-python
   - jedi-language-server
-  - nodejs
+  - nodejs>=26.5.0
 
   # Jupyter Server Proxy
   - jupyter-server-proxy
 
   # Voilà
   - voila
-

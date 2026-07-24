@@ -1,0 +1,11 @@
+bash-language-server
+dockerfile-language-server-nodejs
+pyright
+sql-language-server
+typescript-language-server
+tar@">=7.5.21"
+unified-language-server@">=0.3.0"
+vscode-css-languageserver-bin
+vscode-html-languageserver-bin
+vscode-json-languageserver-bin
+yaml-language-server
