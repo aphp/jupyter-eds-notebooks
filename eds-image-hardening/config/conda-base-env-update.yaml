@@ -16,7 +16,11 @@ dependencies:
   - jupyterlab-git
   
   # JupyterLab Collaboration
-  - jupyter-collaboration
+  # - jupyter-collaboration
+  - pip 
+  - pip:
+      - jupyter-checkpoints==0.3.0
+
 
   # Jupyter LSP
   - jupyter-lsp
