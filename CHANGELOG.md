@@ -1,4 +1,12 @@
 # Changelog
+
+## [1.2.0] - 20260819
+### Fixed
+- Fix CI 
+### Changed
+- NPM version 11 -> 12
+- defined version for npm modules
+
 ## [1.1.0] - 20260416
 ### Added
 - Add R in new eds image
