@@ -54,13 +54,6 @@ RUN apt-get update --yes && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Installing gohdfs binary
-ARG GOHDFS_VERSION="2.4.0"
-RUN curl -s -L "https://github.com/colinmarc/hdfs/releases/download/v${GOHDFS_VERSION}/gohdfs-v${GOHDFS_VERSION}-linux-amd64.tar.gz" | tar -xzvf - -C /tmp && \
-    cp /tmp/gohdfs-v${GOHDFS_VERSION}-linux-amd64/hdfs /usr/local/bin/hdfs &&\
-    cp /tmp/gohdfs-v${GOHDFS_VERSION}-linux-amd64/bash_completion /usr/share/bash-completion/completions/hdfs &&\
-    rm -rf /tmp/gohdfs-v${GOHDFS_VERSION}linux-amd64
-
 # Switching to NB_USER for local tools/libs installation
 USER ${NB_USER}
 
