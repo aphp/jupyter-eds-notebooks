@@ -128,3 +128,6 @@ ENV JUPYTER_CONFIG_PATH="/opt/jupyter/etc/"
 
 # Copying jupyter default user setting 
 COPY --chown=${NB_USER}:${NB_GID} ./eds-image-hardening/config/lab/ /opt/jupyter/etc/lab
+
+# Resource usage configuration
+COPY --chown=${NB_USER}:${NB_GID} ./eds-image-hardening/config/jupyter_server_config.py ${JUPYTER_CONFIG_PATH}
