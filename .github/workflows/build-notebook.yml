@@ -34,12 +34,8 @@ jobs:
       dockle-ignore: "CIS-DI-0010,DKL-DI-0001"
       trivy-ignore-vuln-ids: |
         CVE-2026-59873
-        CVE-2025-68121
-        CVE-2024-24790
         CVE-2024-21508
         CVE-2024-21511
-        CVE-2023-24538
-        CVE-2023-24540
       trivy-ignore-license-ids: |
         WTFPL
       trivy-ignore-files: |
