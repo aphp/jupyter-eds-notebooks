@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.1] - 20260901
+### Removed
+- gohdfs
+  
 ## [1.2.0] - 20260819
 ### Fixed
 - Fix CI 
