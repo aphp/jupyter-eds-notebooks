@@ -46,7 +46,6 @@ The core images include tools and settings that support the features exposed to 
 - `git`
 - `vim`
 - `curl`
-- `gohdfs` (HDFS CLI client)
 - `mamba` (fast drop‑in replacement for `conda`)
 
 ### Data‑science tools
