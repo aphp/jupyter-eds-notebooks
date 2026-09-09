@@ -144,3 +144,9 @@ fi
 if [[ $(which starship) ]]; then 
     eval "$(starship init bash)"
 fi
+
+# Default value for DISK_THRESHOLD
+export DISK_THRESHOLD="${DISK_THRESHOLD:-70}"
+
+# Bash alert if partition usage exceeds the threshold
+df -hP | awk -v threshold="$DISK_THRESHOLD" 'NR>1 && ($5+0)>threshold {print; found=1} END {if(found) printf "\033[33;5m \n ⚠️  WARNING ⚠️  \n \033[0m \n\033[31mDisk space usage > %s%%\nRemember to delete unnecessary files, unused environments, and caches:\n - Clear the cache: rm -rf .cache/pip .cache/uv  \033[0m \n", threshold}'
