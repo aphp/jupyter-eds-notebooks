@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.2.2] - 20260610
+## [1.2.2] - 20260910
 ### Removed
 - Add a terminal alert for high storage utilization.
 
