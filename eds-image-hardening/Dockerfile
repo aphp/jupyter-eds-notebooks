@@ -63,7 +63,6 @@ COPY --chown=${NB_USER}:${NB_GID} "./eds-image-hardening/config/.condarc" "${CON
 
 # Installing environment dependencies according to the YAML env file copied earlier
 RUN mamba clean --all -f -y && \
-    mamba update --all && \
     mamba env update \
         --name base \
         --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
