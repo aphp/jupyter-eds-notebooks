@@ -32,8 +32,9 @@ dependencies:
   - voila
 
   # utilitaire
-  - certifi=2026.10.19
+  - certifi>=2026.10.19 # Fix CVE by upgrading required lib
   - pip>=26.2.2
   - pip:
       - pipdeptree
       - uv
+
