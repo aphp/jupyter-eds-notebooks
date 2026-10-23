@@ -23,7 +23,7 @@ dependencies:
   - jupyterlab-lsp
   - jupyter-lsp-python
   - jedi-language-server
-  - nodejs>=26.5.0
+  - nodejs
 
   # Jupyter Server Proxy
   - jupyter-server-proxy
@@ -31,5 +31,10 @@ dependencies:
   # Voilà
   - voila
 
-  ## Fix CVE by upgrading required lib
-  - certifi>=2026.10.19
+  # utilitaire
+  - certifi>=2026.10.19 # Fix CVE by upgrading required lib
+  - pip>=26.2.2
+  - pip:
+      - pipdeptree
+      - uv
+
