@@ -62,8 +62,7 @@ COPY --chown=${NB_USER}:${NB_GID} "./eds-image-hardening/config/conda-base-env-u
 COPY --chown=${NB_USER}:${NB_GID} "./eds-image-hardening/config/.condarc" "${CONDA_DIR}/.condarc"
 
 # Installing environment dependencies according to the YAML env file copied earlier
-RUN mamba clean --all -f -y && \
-    mamba env update --name base --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
+RUN mamba env update --name base --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
     mamba clean --all -f -y
 
 RUN jupyter labextension update --all

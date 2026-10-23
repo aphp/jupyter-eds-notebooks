@@ -31,7 +31,8 @@ dependencies:
   # Voilà
   - voila
 
-  # utilistaire
+  # utilitaire
+  - certifi=2026.10.19
   - pip
   - pip:
       - pipdeptree
