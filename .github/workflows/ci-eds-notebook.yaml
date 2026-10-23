@@ -6,14 +6,12 @@ on:
     - cron: "0 5 * * *"
 
   push:
-    branches-ignore:
-      - "main"
     tags:
-      - "*"
+      - "v*.*.*"
 
 jobs:
   eds-base-notebook-release:
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
       dockerfile-path: &docker-path "eds-image-hardening/Dockerfile"
@@ -21,6 +19,16 @@ jobs:
       image-custom-tag: "x86_64-ubuntu-24.04"
       base-notebook-image: &base-notebook-image "quay.io/jupyter/base-notebook:x86_64-ubuntu-24.04"
       notebook-image: &notebook-image "EDS-BASE-NOTEBOOK"
+
+  eds-base-notebook-qua:
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    with:
+      dockerfile-path: *docker-path 
+      image-name: *image-name
+      image-custom-tag: "x86_64-ubuntu-24.04-qua"
+      base-notebook-image: *base-notebook-image
+      notebook-image: *notebook-image
 
   eds-base-notebook-dev:
     if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
@@ -33,7 +41,7 @@ jobs:
       notebook-image: *notebook-image
 
   eds-base-notebook-snapshot:
-    if: ${{ github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/') }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
       dockerfile-path: *docker-path
@@ -63,6 +71,17 @@ jobs:
       base-notebook-image: &o-base-notebook-image "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-snapshot"
       notebook-image:  &o-notebook-image "EDS-OCAML-NOTEBOOK"
       
+  eds-ocaml-notebook-qua:
+    if: ${{ needs.eds-base-notebook-qua.result == 'success' }}
+    uses: "./.github/workflows/build-notebook.yml"
+    needs: "eds-base-notebook-qua"
+    with:
+      dockerfile-path: &o-docker-path "eds-ocaml-notebook/Dockerfile"
+      image-name: &o-image-name "ghcr.io/aphp/base-ocaml-notebook"
+      image-custom-tag: "x86_64-ubuntu-24.04-qua"
+      base-notebook-image: &o-base-notebook-image "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-qua"
+      notebook-image:  &o-notebook-image "EDS-OCAML-NOTEBOOK"
+
   eds-ocaml-notebook-dev:
     if: ${{ needs.eds-base-notebook-dev.result == 'success' }}
     uses: "./.github/workflows/build-notebook.yml"
