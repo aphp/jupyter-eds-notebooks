@@ -33,7 +33,7 @@ dependencies:
 
   # utilitaire
   - certifi=2026.10.19
-  - pip
+  - pip>=26.2.2
   - pip:
       - pipdeptree
       - uv
