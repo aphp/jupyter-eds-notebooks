@@ -183,6 +183,9 @@ Images follow a **fixed set of tags**, corresponding to different stability leve
 - `x86_64-ubuntu-24.04`  
   → **Stable** image, recommended for production and standard use.
 
+- `x86_64-ubuntu-24.04-qua`  
+  → **Qualification** image, including more recent or experimental changes. Suitable for testing upcoming updates.
+
 - `x86_64-ubuntu-24.04-dev`  
   → **Development** image, including more recent or experimental changes. Suitable for testing upcoming updates.
 
