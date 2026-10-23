@@ -1,0 +1,474 @@
+# Default values for the datalab.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- Custom Helm Release name.
+# @section -- Helm Release settings
+nameOverride: "datalab"
+
+# -- Custom Helm Release full name.
+# @section -- Helm Release settings
+fullnameOverride: ""
+
+# -- Datalab settings.
+# @section -- Datalab settings
+# @default -- Configuration fitting an APHP-EDS context
+configuration:
+  # -- Datalab settings regarding JupyterHub.
+  # @section -- Datalab settings
+  # @default -- JupyterHub configuration override fitting an APHP-EDS context
+  jupyterhub:
+    singleuser:
+      ownership:
+        gidOverride: 100
+    # -- Specifies JupyterHub's available profile, containing the notebook's docker images.
+    # @section -- Datalab settings
+    # @default -- Single-ser and collaborative profiles fitting an APHP-EDS context.
+    profiles:
+      # -- Single-user profiles, used when a user spawns his own JLab environment.
+      # @section -- Datalab settings
+      # @default -- APHP EDS Base and OCAML notebook profiles, alongside Jupyter Project official 
+      #             minimal and datascience notebooks
+      user: 
+        # configuration.jupyterhub.profiles.user[0].displayName -- Profile's name to be display to the user.
+        # @section -- Datalab settings
+        - displayName: "Jupyter EDS Base Notebook - DEV"
+          # configuration.jupyterhub.profiles.user[0].slug -- Profile's slug.
+          # @section -- Datalab settings
+          slug: "eds-base-dev"
+          # configuration.jupyterhub.profiles.user[0].image -- Image to be used with that profile.
+          # @section -- Datalab settings
+          image: "localhost/jupyterlab:eds-base-notebook_ubuntu-24.04-local"
+          # configuration.jupyterhub.profiles.user[0].imagePullPolicy -- Image's Pull Policy.
+          # @section -- Datalab settings
+          imagePullPolicy: "Always"
+          cpu_limit: 1
+          cpu_guarantee: 0.1
+          memory_limit: "2G"
+          memory_guarantee: "1G"
+        - displayName: "Jupyter EDS OCAML Notebook - DEV"
+          slug: "eds-ocaml-dev"
+          image: "aphp/jupyterlab:eds-ocaml-notebook_ubuntu-22.04-dev"
+          imagePullPolicy: "Always"
+        - displayName: "Jupyter Minimal Notebook"
+          slug: "minimal"
+          image: "quay.io/jupyter/minimal-notebook:latest"
+          imagePullPolicy: "Always"
+        - displayName: "Jupyter Datascience Notebook"
+          slug: "datascience"
+          image: "quay.io/jupyter/datascience-notebook:latest"
+          imagePullPolicy: "Always"
+
+      # -- Collaboration profiles, used when a user spawns a collaborative JLab.
+      # @section -- Datalab settings
+      # @default -- APHP EDS Base and OCAML notebook profiles.
+      collaboration:
+        # configuration.jupyterhub.profiles.collaboration[0].displayName -- Image name to be displayed in the profile list.
+        # @section -- Datalab settings
+        - displayName: "Jupyter EDS Base Notebook - DEV"
+          # configuration.jupyterhub.profiles.collaboration[0].slug -- Profile's slug.
+          # @section -- Datalab settings
+          slug: "eds-base-dev"
+          # configuration.jupyterhub.profiles.collaboration[0].image -- Image to be used with that profile.
+          # @section -- Datalab settings
+          image: "localhost/jupyterlab:eds-base-notebook_ubuntu-24.04-local"
+          # configuration.jupyterhub.profiles.collaboration[0].imagePullPolicy -- Image's Pull Policy.
+          # @section -- Datalab settings
+          imagePullPolicy: "Always"
+          cpu_limit: 1
+          cpu_guarantee: 0.1
+          memory_limit: "2G"
+          memory_guarantee: "1G"
+        - displayName: "Jupyter EDS OCAML Notebook - DEV"
+          slug: "eds-ocaml-dev"
+          image: "aphp/jupyterlab:eds-ocaml-notebook_ubuntu-22.04-dev"
+          imagePullPolicy: "Always"
+
+# Settings related to persistence management across the Datalab's applications.
+persistence:
+  # -- Creates PVCs to be used across the Datalab's applications.
+  # @section -- Datalab persistence settings
+  # @default -- HDD and SSD Data PVCs
+  createPVC:
+  # persistence.createPVC[0].name -- Name of the PVC to create.
+  # @section -- Datalab persistence settings
+  - name: data-hdd-pvc
+    storageClassName: "manual"
+    accessMode: "ReadWriteOnce"
+    size: "2Gi"
+
+# -- Settings related to persistence management across the Datalab's applications.
+# @section -- Datalab serviceAccount settings
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+# -- JupyterHub Chart settings.
+# @section -- JupyterHub Chart settings
+# @default -- Exposing a local Jupyterhub instance on /jupyter
+jupyterhub:
+  enabled: true
+
+  nameOverride: "datalab-jupyter"
+
+  debug:
+    enabled: false
+
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/app-root: "/jupyter"
+    hosts:
+    - "localhost"
+    tls: []
+  
+  httpRoute:
+    enabled: false
+    gateway:
+      name: "traefik-gateway"
+      namespace: "traefik"
+    hostnames:
+      - localhost
+
+  hub:
+    image:
+      pullPolicy: "Always"
+    baseUrl: "/jupyter"
+    db:
+      type: "sqlite-pvc"
+      upgrade:
+      pvc:
+        annotations: {}
+        selector: {}
+        accessModes:
+          - "ReadWriteOnce"
+        storage: "2Gi"
+        storageClassName: "standard"
+    
+    containerSecurityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+
+    labels:
+      aphp.fr/env: dev
+      aphp.fr/app: jupyter-hub
+
+      
+    resources:
+      requests:
+        memory: "2Gi"
+        cpu: "0.5"
+        ephemeral-storage: 1Gi
+      limits:
+        memory: "4Gi"
+        cpu: "1"
+        ephemeral-storage: 2Gi
+
+    config:
+      Authenticator:
+        admin_users:
+          - "admin" 
+        allowed_users:
+          - "datalab-local"
+          - "user1"
+          - "user2"
+
+      DummyAuthenticator:
+        password: "supersecretpassword"
+      JupyterHub:
+        authenticator_class: "dummy"
+
+    extraEnv:
+      PROJECT: "datalab-local"
+      JHUB_DEFAULT_URL: "/jupyter/hub/spawn/datalab-local"
+
+    redirectToServer: false
+
+    extraVolumeMounts:
+      - name: "extra-config"
+        mountPath: "/usr/local/etc/jupyterhub/jupyterhub_config.d"
+
+    extraVolumes:
+      - name: "extra-config"
+        configMap:
+          name: "jupyterhub-extra-config"
+
+      
+  scheduling:
+    userScheduler:
+      enabled: false
+    podPriority:
+      enabled: false
+    userPlaceholder:
+      enabled: false
+
+  proxy:
+    labels:
+      aphp.fr/env: dev
+      aphp.fr/app: jupyter-hub
+    service:
+      type: "ClusterIP"
+    chp:
+      containerSecurityContext:
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: "0.5"
+          ephemeral-storage: 1Gi
+        limits:
+          memory: "2Gi"
+          cpu: "1"
+          ephemeral-storage: 2Gi
+
+
+  prePuller:
+    continuous:
+      enabled: false
+    hook:
+      enabled: false
+
+  cull:
+    enabled: true
+    timeout: 3600
+    every: 300
+
+  singleuser:
+    podNameTemplate: "aam-{unescaped_username}"
+    networkPolicy:
+      egress:
+        - to:
+          - namespaceSelector:
+              matchLabels:
+                kubernetes.io/metadata.name: rustfs
+            podSelector:
+              matchLabels:
+                app.kubernetes.io/name: rustfs
+            ports:
+            - port: 9000
+              protocol: TCP
+
+    extraEnv:
+      PYDEVD_DISABLE_FILE_VALIDATION: "1"
+
+    extraLabels:
+      aphp.fr/env: dev
+      aphp.fr/app: jupyter-lab
+
+    allowPrivilegeEscalation: false
+
+
+    storage:
+      extraVolumes:
+        passwd-file:
+          name: passwd-file
+          configMap:
+            name: jupyter-singleuser-users
+        group-file:
+          name: group-file
+          configMap:
+            name: jupyter-singleuser-groups
+
+        extraVolumeMounts:
+          passwd-file:
+            name: passwd-file
+            mountPath: /etc/passwd
+            subPath: passwd
+            readOnly: true
+          group-file:
+            name: group-file
+            mountPath: /etc/group
+            subPath: group
+            readOnly: true
+
+      dynamic:
+        storageClass: "standard"
+        storageAccessModes:
+        - "ReadWriteOnce"
+      capacity: "5Gi"
+
+      extraVolumeMounts:
+        datalab-data-hdd:
+          name: "datalab-data-hdd"
+          mountPath: "/data/hdd"
+        pvc-rustfs-data:
+          name: "pvc-rustfs-data"
+          mountPath: "/data/s3"
+        in-out-datalab-pvc:
+          name: "in-out-datalab-pvc"
+          mountPath: "/data/batch"
+
+      extraVolumes:
+        datalab-data-hdd:
+          name: "datalab-data-hdd"
+          persistentVolumeClaim:
+            claimName: "data-hdd-pvc"
+        pvc-rustfs-data:
+          name: "pvc-rustfs-data"
+          persistentVolumeClaim:
+            claimName: "pvc-rustfs-data"
+        in-out-datalab-pvc:
+          name: "in-out-datalab-pvc"
+          persistentVolumeClaim:
+            claimName: "in-out-datalab-pvc"
+          
+    lifecycleHooks:
+      postStart:
+        exec:
+          command:
+          - "sh"
+          - "-c"
+          - "if [ -d /tmp/home ]; then cp -rf /tmp/home/.[^.]* /home/jovyan/; fi"
+
+    cpu:
+      limit: 1
+      guarantee: 1
+    memory:
+      limit: "4G"
+      guarantee: "2G"
+
+inception:
+  enabled: true
+
+  nameOverride: "inception"
+
+  # INCEpTION container image settings.
+  image:
+    # -- Image repository.
+    # @section -- INCEpTION deployment settings
+    repository: "ghcr.io/kzgrzendek/inception/inception-dev"
+    # -- Image Pull Policy.
+    # @section -- INCEpTION deployment settings
+    pullPolicy: "Always"
+    # -- Image tag.
+    # @section -- INCEpTION deployment settings
+    tag: "34.0-snapshot"
+
+  initContainers: {}
+  extraContainers: {}
+
+  networkPolicies:
+    enabled: true
+
+  config:
+    baseUrl: "/inception"
+    logging: DEBUG
+
+    security:
+      acceptedOrigins: "localhost"
+      allowHttp: true
+
+    database:
+      name: "inception"
+      hostname: "datalab-inception-mariadb"
+      port: 3306
+      useSSL: false
+      serverTimezone: "UTC"
+      auth: 
+        username: "inception"
+        password:
+          value: "Gre@tPwd465!*"
+          existingSecret:
+            secretName: ""
+            secretKey: ""
+
+    extraConfig:
+      security.oauth.roles.enabled: true
+      security.oauth.roles.claim: groups
+      security.oauth.roles.admin: /INCEPTION_ADMIN
+      security.oauth.roles.user: /INCEPTION_USER
+      security.oauth.roles.project-creator: /INCEPTION_PROJECT_CREATOR
+      security.oauth.roles.remote: /INCEPTION_REMOTE
+
+
+  auth:
+    defaultAdmin:
+      enabled: true
+      username: "admin"
+      password: 
+        value: "supersecretpassword"
+        existingSecret: 
+          secretName: ""
+          secretKey: ""
+
+    oauth2:
+      enabled: true
+      autoLogin: false 
+      clientName: Keycloak OIDC
+      clientID:
+        value: "inception-client-oauth"
+      clientSecret: 
+        value: "Tn6yHpQ9kik6BFZPGXxTvqBJiQ54TxwS"
+        existingSecret: 
+          secretName: ""
+          secretKey: ""
+      scope: openid, profile
+      authorizationGrantType: authorization_code
+      redirectURI: http://localhost/inception/login/oauth2/code/inception-client
+      issuerURI: https://auth.workshop.eds-ovh.org/realms/datalab-workshop
+      usernameAttribute: preferred_username
+
+  ingress:
+    enabled: true
+    className: "nginx"
+
+    hosts:
+      - host: localhost
+        paths:
+        - path: /inception
+          pathType: Prefix
+
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    failureThreshold: 2
+  startupProbe:
+    enabled: false
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 5
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+
+  storage:
+    data:
+      storageClassName: "standard"
+      size: "5Gi"
+      accessMode: ReadWriteOnce
+    
+  mariadb:
+    enabled: true
+    nameOverride: "inception-mariadb"
+
+    image:
+      debug: true
+    primary:
+      persistence:
+        annotations:
+          helm.sh/resource-policy: keep
+        storageClass: "standard"
+        accessModes:
+        - "ReadWriteOnce"
+        size: "5Gi"
+
+      service:
+        ports:
+          mysql: 3306
+
+    networkPolicy:
+      allowExternal: false
+
+    auth:
+      database: "inception"
+      username: "inception"
+      password: "Gre@tPwd465!*"
