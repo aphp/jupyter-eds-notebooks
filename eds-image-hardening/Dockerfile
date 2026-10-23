@@ -66,9 +66,8 @@ RUN mamba clean --all -f -y && \
     mamba env update \
         --name base \
         --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
-    mamba clean --all -f -y
-
-RUN python -m pip install --upgrade pip==26.2.2
+    mamba clean --all -f -y && \
+    python -m pip install --no-cache-dir --upgrade pip==26.2.2 
 
 RUN jupyter labextension update --all
 
