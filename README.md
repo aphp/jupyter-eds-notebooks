@@ -85,7 +85,7 @@ Out‑of‑the‑box, the images ship with opinionated defaults, including:
 
 ### Conda environment protection
 
-- The default `conda` environment (`base`) is mounted **read‑only**.  
+- The default `conda` environment (`base`) is mounted **read‑only**.
   This prevents users from accidentally breaking the shared environment while still allowing them to work with additional environments or user‑level tools where appropriate.
 
 ---
@@ -180,19 +180,19 @@ How these images are integrated (and which image is the default) is defined in t
 
 Images follow a **fixed set of tags**, corresponding to different stability levels:
 
-- `x86_64-ubuntu-24.04`  
+- `x86_64-ubuntu-24.04`
   → **Stable** image, recommended for production and standard use.
 
-- `x86_64-ubuntu-24.04-qua`  
+- `x86_64-ubuntu-24.04-qua`
   → **Qualification** image, including more recent or experimental changes. Suitable for testing upcoming updates.
 
-- `x86_64-ubuntu-24.04-dev`  
+- `x86_64-ubuntu-24.04-dev`
   → **Development** image, including more recent or experimental changes. Suitable for testing upcoming updates.
 
-- `x86_64-ubuntu-24.04-snapshot`  
+- `x86_64-ubuntu-24.04-snapshot`
   → **Feature development** image, including more recent or experimental changes. Suitable for testing upcoming updates.
 
-- `nightly`  
+- `nightly`
   → **Nightly** build, automatically rebuilt from the latest state of the repository. Intended for testing and early feedback only.
 
 **Recommended usage:**

@@ -59,7 +59,7 @@ USER ${NB_USER}
 COPY ./eds-ocaml-notebook/config/default.opam.locked /tmp/default.opam.locked
 
 # Updating OPAM repositories & installing the "base" switch from the definition file
-RUN  opam init --yes \ 
+RUN  opam init --yes \
         --bare \
         --auto-setup \
         --shell bash && \
@@ -82,7 +82,7 @@ RUN eval "$(opam env --switch=/opt/opam/switches/default --set-switch)" && \
 
 
 #Switching back to root to install OPAM Kernel system-wide
-USER root 
+USER root
 
 # Installing the OCAML Kernel from the genspec file generated earlier
 RUN eval "$(opam env --switch=/opt/opam/switches/default --set-switch)" && \
@@ -95,5 +95,5 @@ RUN eval "$(opam env --switch=/opt/opam/switches/default --set-switch)" && \
 RUN fix-permissions "/home/${NB_USER}"
 
 
-# Switching to NB_USER that will be the runtime notebook user  
+# Switching to NB_USER that will be the runtime notebook user
 USER ${NB_USER}

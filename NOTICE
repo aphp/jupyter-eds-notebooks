@@ -3,11 +3,11 @@ This software contains the following dependencies developed by the Jupyter Proje
 - Docker Images:
   - jupyter docker stack : https://github.com/jupyterhub/zero-to-jupyterhub-k8s
 
-Those dependencies are present in the "jupyter/docker-stacks" github repository provided by the Jupyter Project under the BSD 3-Clause License, 
+Those dependencies are present in the "jupyter/docker-stacks" github repository provided by the Jupyter Project under the BSD 3-Clause License,
 as stated by the following document : https://github.com/jupyter/docker-stacks/blob/main/LICENSE.md
 
 
-As such, you'll find below the BSD 3 Clause Licence : 
+As such, you'll find below the BSD 3 Clause Licence :
 
 BSD 3-Clause License
 

@@ -14,7 +14,7 @@ dependencies:
 
   # JupyterLab Git
   - jupyterlab-git
-  
+
   # JupyterLab Collaboration
   - jupyter-collaboration
 
@@ -37,4 +37,3 @@ dependencies:
   - pip:
       - pipdeptree
       - uv
-

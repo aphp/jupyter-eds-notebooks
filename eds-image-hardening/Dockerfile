@@ -80,13 +80,13 @@ RUN jupyter labextension disable \
 # Switching to root user to set all permissions after packages installations
 USER root
 
-# Add nodejs tools 
+# Add nodejs tools
 COPY  "./eds-image-hardening/config/npm-packages.txt" "/tmp/npm-packages.txt"
 
 RUN xargs npm cache clean --force && \
     xargs npm install -g npm@latest &&\
     xargs npm install -g < /tmp/npm-packages.txt &&\
-    xargs npm install -g npm-check-updates &&\  
+    xargs npm install -g npm-check-updates &&\
     xargs npm cache clean --force
 
  # Clean up
@@ -97,7 +97,7 @@ RUN fix-permissions "/home/${NB_USER}" && \
     chown -R root:root "${CONDA_DIR}" && \
     chmod -R 755 "${CONDA_DIR}"
 
-# Switching to NB_USER that will be the runtime notebook user  
+# Switching to NB_USER that will be the runtime notebook user
 USER ${NB_USER}
 
 # Setting correct user name for the environment
@@ -119,5 +119,5 @@ COPY --chown=${NB_USER}:${NB_GID} ./eds-image-hardening/scripts/init-eds-noteboo
 # for default config
 ENV JUPYTER_CONFIG_PATH="/opt/jupyter/etc/"
 
-# Copying jupyter default user setting 
+# Copying jupyter default user setting
 COPY --chown=${NB_USER}:${NB_GID} ./eds-image-hardening/config/lab/ /opt/jupyter/etc/lab

@@ -136,12 +136,12 @@ if [[ $(which opam) ]]; then
 fi
 
 # Initializing go-hdfs autocompletion if present
-if [[ $(which hdfs) ]]; then 
+if [[ $(which hdfs) ]]; then
     complete -o nospace -F _hdfs_complete hdfs
 fi
 
 # Initializing Starship prompt if present
-if [[ $(which starship) ]]; then 
+if [[ $(which starship) ]]; then
     eval "$(starship init bash)"
 fi
 

@@ -26,7 +26,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
-      dockerfile-path: *docker-path 
+      dockerfile-path: *docker-path
       image-name: *image-name
       image-custom-tag: "x86_64-ubuntu-24.04-qua"
       base-notebook-image: *base-notebook-image
@@ -36,7 +36,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/dev' && github.event_name == 'push' }}
     uses: "./.github/workflows/build-notebook.yml"
     with:
-      dockerfile-path: *docker-path 
+      dockerfile-path: *docker-path
       image-name: *image-name
       image-custom-tag: "x86_64-ubuntu-24.04-dev"
       base-notebook-image: *base-notebook-image
@@ -61,7 +61,7 @@ jobs:
       image-custom-tag: "x86_64-ubuntu-24.04-nightly"
       base-notebook-image: *base-notebook-image
       notebook-image: *notebook-image
-      
+
   eds-ocaml-notebook-snapshot:
     if: ${{ needs.eds-base-notebook-snapshot.result == 'success' }}
     uses: "./.github/workflows/build-notebook.yml"
@@ -72,7 +72,7 @@ jobs:
       image-custom-tag: "x86_64-ubuntu-24.04-snapshot"
       base-notebook-image: &o-base-notebook-image "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-snapshot"
       notebook-image:  &o-notebook-image "EDS-OCAML-NOTEBOOK"
-      
+
   eds-ocaml-notebook-qua:
     if: ${{ needs.eds-base-notebook-qua.result == 'success' }}
     uses: "./.github/workflows/build-notebook.yml"
@@ -101,7 +101,7 @@ jobs:
     if: ${{ needs.eds-base-notebook-nightly.result == 'success' }}
     with:
       dockerfile-path: *o-docker-path
-      image-name: *o-image-name 
+      image-name: *o-image-name
       image-custom-tag: "x86_64-ubuntu-24.04-nightly"
       base-notebook-image: &o-base-notebook-image "ghcr.io/aphp/base-eds-notebook:x86_64-ubuntu-24.04-nightly"
       notebook-image:  *o-notebook-image
@@ -112,7 +112,7 @@ jobs:
     needs: "eds-base-notebook-release"
     with:
       dockerfile-path: *o-docker-path
-      image-name: *o-image-name 
+      image-name: *o-image-name
       image-custom-tag: "x86_64-ubuntu-24.04"
       base-notebook-image: *o-base-notebook-image
       notebook-image:  *o-notebook-image
