@@ -198,7 +198,7 @@ Images follow a **fixed set of tags**, corresponding to different stability leve
 **Recommended usage:**
 
 - For production JupyterHub / HELIX deployments, **pin to** `x86_64-ubuntu-24.04`.
-- For pre‑production or integration testing, use `x86_64-ubuntu-24.04-dev`.
+- For pre‑production or integration testing, use `x86_64-ubuntu-24.04-dev` or `x86_64-ubuntu-24.04-qua`.
 - For trying the very latest changes (at your own risk), use `nightly`.
 
 Downstream configurations should always pin an explicit tag (not `latest`) to ensure **reproducibility**.
