@@ -62,12 +62,10 @@ COPY --chown=${NB_USER}:${NB_GID} "./eds-image-hardening/config/conda-base-env-u
 COPY --chown=${NB_USER}:${NB_GID} "./eds-image-hardening/config/.condarc" "${CONDA_DIR}/.condarc"
 
 # Installing environment dependencies according to the YAML env file copied earlier
-RUN mamba clean --all -f -y && \
-    mamba update --all && \
-    mamba env update \
-        --name base \
-        --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
-    mamba clean --all -f -y
+RUN mamba env update --name base --file "${CONDA_DIR}"/conda-base-env-update.yaml && \
+    mamba clean --all -f -y  && \
+    python -m pip install --no-cache-dir --upgrade pip==26.2.2
+
 
 RUN jupyter labextension update --all
 
@@ -86,7 +84,7 @@ USER root
 COPY  "./eds-image-hardening/config/npm-packages.txt" "/tmp/npm-packages.txt"
 
 RUN xargs npm cache clean --force && \
-    xargs npm install -g npm@12.0.2 &&\
+    xargs npm install -g npm@latest &&\
     xargs npm install -g < /tmp/npm-packages.txt &&\
     xargs npm install -g npm-check-updates &&\  
     xargs npm cache clean --force

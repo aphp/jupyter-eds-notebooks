@@ -47,6 +47,8 @@ The core images include tools and settings that support the features exposed to 
 - `vim`
 - `curl`
 - `mamba` (fast drop‑in replacement for `conda`)
+- `uv` : An extremely fast Python package and project manager, written in Rust.
+- `pipdeptree` : pipdeptree displays installed Python packages as a dependency tree.
 
 ### Data‑science tools
 
@@ -181,8 +183,14 @@ Images follow a **fixed set of tags**, corresponding to different stability leve
 - `x86_64-ubuntu-24.04`  
   → **Stable** image, recommended for production and standard use.
 
+- `x86_64-ubuntu-24.04-qua`  
+  → **Qualification** image, including more recent or experimental changes. Suitable for testing upcoming updates.
+
 - `x86_64-ubuntu-24.04-dev`  
   → **Development** image, including more recent or experimental changes. Suitable for testing upcoming updates.
+
+- `x86_64-ubuntu-24.04-snapshot`  
+  → **Feature development** image, including more recent or experimental changes. Suitable for testing upcoming updates.
 
 - `nightly`  
   → **Nightly** build, automatically rebuilt from the latest state of the repository. Intended for testing and early feedback only.
