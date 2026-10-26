@@ -240,6 +240,7 @@ Before opening a pull request, please:
 - Check existing issues and pull requests.
 - Follow any coding and Dockerfile style guidelines described in `CONTRIBUTING.md`.
 - Add or update documentation when changing image content or behavior.
+- Install [pre-commit](https://pre-commit.com/) to hive the hooks of the project.
 
 For security issues, please follow the process described in `SECURITY.md`.
 
