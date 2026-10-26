@@ -7,10 +7,10 @@
 ## [1.2.1] - 20260901
 ### Removed
 - gohdfs
-  
+
 ## [1.2.0] - 20260819
 ### Fixed
-- Fix CI 
+- Fix CI
 ### Changed
 - NPM version 11 -> 12
 - defined version for npm modules
@@ -24,7 +24,7 @@
 
 ## [1.0.2] - 20260318
 ### Fixed
-- Fix CI to excluded CVE-2025- trivy scan 
+- Fix CI to excluded CVE-2025- trivy scan
 ### Added
 - Add changelog
 - Add module do2unix
@@ -38,7 +38,7 @@
 - Remove default user setting on code hover
 ### Changed
 - Update of Ubuntu 22.04 eds-notebook images to Ubuntu 24.04
-  
+
 ## [1.0.0] - 20251202
 ### Added
 - First release since the project was open-sourced
