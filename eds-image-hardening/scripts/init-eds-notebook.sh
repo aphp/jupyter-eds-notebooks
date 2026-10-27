@@ -2,7 +2,7 @@
 
 # Script : init-eds-notebook.sh
 # Version: 2.0
-# Authors : 
+# Authors :
 #    - Kévin ZGRZENDEK for APHP - I&D
 #    - Quentin GOUHOURY for APHP - I&D
 # Description : This script initializes the notebook environment by copying template
@@ -16,8 +16,8 @@
 
 # Copying the content of the source template directory to the user's destination directory.
 # $1 (str): Path to the source template directory
-# $2 (str) : Path to the destination directory 
-# $3 (bool) : overwrite directory - true by default 
+# $2 (str) : Path to the destination directory
+# $3 (bool) : overwrite directory - true by default
 function secure_copy_templates {
 
     echo "[INFO] Found configuration templates(s) to copy in the following directory : $2."
@@ -43,7 +43,7 @@ function populate_symlinks {
     # Ref. step 5. of Jupyter LSP installation doc -> https://github.com/krassowski/jupyterlab-lsp/blob/main/README.md#installation
     ln -nfs "${CONDA_DIR}" "$1/.lsp_base_symlink"
 
-    # Allowing Jupyter LSP to read on user libraries to provide hints on those 
+    # Allowing Jupyter LSP to read on user libraries to provide hints on those
     ln -nfs "/home/${NB_USER}/envs" "$1/.lsp_user_symlink"
 
     # Add symlink into home dir to .condarc file into conda dir

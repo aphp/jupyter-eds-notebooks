@@ -36,5 +36,5 @@ Edit `config/.condarc` according to the [official conda configuration documentat
 
 Edit `config/conda-base-env-update.yaml` to [add or remove the desired packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-file-manually), then rebuild the image.
 
-**Important:**  
+**Important:**
 Do **not** add top‑level keys such as `name`, `channels`, or any other root‑level keys to `config/conda-base-env-update.yaml`. Doing so would create a **new** `conda` environment instead of enriching the existing default one that already contains all dependencies required by JupyterLab. This would make the image non‑functional.
