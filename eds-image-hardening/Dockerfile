@@ -66,7 +66,6 @@ RUN mamba env update --name base --file "${CONDA_DIR}"/conda-base-env-update.yam
     mamba clean --all -f -y  && \
     python -m pip install --no-cache-dir --upgrade pip==26.2.2
 
-
 RUN jupyter labextension update --all
 
 # Disabling unwanted extensions & locking the extension manager
