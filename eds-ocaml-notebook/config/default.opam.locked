@@ -12,5 +12,4 @@ depends: [
   "base-bytes"
   "jupyter" {>= "2.20.0"} #Forcing latest jupyter kernel version to fixe CVE-2026-44727.
   "astring"
-  "rattler" {>= "9.0.5"} #Forcing latest jupyter kernel version to fixe CVE-2026-44727.
 ]
