@@ -49,18 +49,6 @@ function populate_symlinks {
     # Add symlink into home dir to .condarc file into conda dir
     ln -nfs "${CONDA_DIR}/.condarc" "$1/.condarc"
 
-    # Add symlink into home dir to /data/hdd folder into hdd
-    if [ -d "$HDD_MOUNTING_PATH" ]; then
-        echo "[INFO] HDD Symlinks populated."
-        ln -nfs "/${HDD_MOUNTING_PATH}" "/home/${NB_USER}/hdd"
-    fi
-
-    # Add symlink into home dir to /data/sdd folder into sdd
-    if [ -d "$SSD_MOUNTING_PATH" ]; then
-        echo "[INFO] SSD Symlinks populated."
-        ln -nfs "/${SSD_MOUNTING_PATH}" "/home/${NB_USER}/ssd"
-    fi
-
     echo "[INFO] Symlinks populated."
 }
 
@@ -83,9 +71,6 @@ function init_user_env {
 
 
 echo "[INFO] Starting EDS Notebook initialization process."
-HDD_MOUNTING_PATH="${HDD_MOUNTING_PATH:-"/data/hdd"}"
-SSD_MOUNTING_PATH="${SSD_MOUNTING_PATH:-"/data/ssd"}"
-
 CONFIG_DIR="/opt/jupyter/etc"
 CONFIG_TEMPLATES_DIR="/opt/jupyter/templates"
 USER_HOME_DIR="/home/${NB_USER}"
