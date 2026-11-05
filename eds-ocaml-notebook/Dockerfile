@@ -33,8 +33,9 @@ ENV NOTEBOOK_GIT_BRANCH=${GIT_BRANCH}
 ENV NOTEBOOK_GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
 
 # Installing OPAM + OCAML requirements
+#    apt-get install --yes --no-install-recommends \
 RUN apt-get update --yes && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes  \
         make \
         gcc \
         opam \
